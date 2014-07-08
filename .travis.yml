@@ -7,8 +7,6 @@ install:
   - "cd test"
   - "curl -L https://install.meteor.com/ | /bin/sh"
   - "npm install"
-after_install:
-  - "saucelabs.sh"
 script : 
   - "grunt travis"
 services:
