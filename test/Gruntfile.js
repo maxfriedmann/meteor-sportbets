@@ -23,6 +23,23 @@ module.exports = function(grunt)
 				},
 			},
 		},
+		sauce_tunnel: {
+			options: {
+				username: 'maxfriedmann',
+				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
+				identifier: 'tunnel identifier',
+				tunnelTimeout: 120 // whatever timeout you want to use
+			},
+			server: {}
+		},
+		sauce_tunnel_stop: {
+		    	options: {
+				username: 'maxfriedmann',
+				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
+				identifier: 'tunnel identifier'
+			},
+			server: {}
+		},
 		
 		nightwatch : {
 			options : {
@@ -63,5 +80,5 @@ module.exports = function(grunt)
 	
 	grunt.registerTask('test', [ 'shell:meteor_start', 'nightwatch' ]);
 	grunt.registerTask('sauce', [ 'mkdir:all', 'nightwatch:saucelabs' ]);
-	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'nightwatch:saucelabs_connect' ]);
+	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'sauce_tunnel', 'nightwatch:saucelabs_connect','sauce_tunnel_stop' ]);
 };
