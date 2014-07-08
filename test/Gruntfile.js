@@ -42,8 +42,8 @@ module.exports = function(grunt)
 					"launchUrl" : "http://localhost:3000",
 					"selenium_host" : "ondemand.saucelabs.com",
 					"selenium_port" : 80,
-					"username" : "maximilianfriedmann",
-					"access_key" : "0a685284-2414-45ae-9187-74aafcab04ef"
+					"username" : "maxfriedmann",
+					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9"
 				}
 			}
 		}
