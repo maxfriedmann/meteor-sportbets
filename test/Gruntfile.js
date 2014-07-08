@@ -48,7 +48,7 @@ module.exports = function(grunt)
 				"saucelabs_connect" : {
 					"standalone" : false,
 					"launchUrl" : "http://localhost:3000",
-					"selenium_host" : "http://localhost",
+					"selenium_host" : "127.0.0.1",
 					"selenium_port" : 4445,
 					"username" : "maxfriedmann",
 					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9"
