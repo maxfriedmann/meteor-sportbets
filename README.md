@@ -20,7 +20,8 @@ Easy, heh?
 * Live Version : http://sportbets.meteor.com
 
 # Testing
-* https://travis-ci.org/maxfriedmann/meteor-sportbets
+
+See https://travis-ci.org/maxfriedmann/meteor-sportbets
 
 
 
