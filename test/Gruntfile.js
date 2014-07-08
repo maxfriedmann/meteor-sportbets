@@ -55,4 +55,5 @@ module.exports = function(grunt)
 	
 	grunt.registerTask('test', [ 'shell:meteor_start', 'nightwatch' ]);
 	grunt.registerTask('sauce', [ 'mkdir:all', 'nightwatch:saucelabs' ]);
+	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'nightwatch:saucelabs' ]);
 };
