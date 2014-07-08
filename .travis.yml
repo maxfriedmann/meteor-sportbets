@@ -7,6 +7,6 @@ install:
   - "cd test"
   - "curl -L https://install.meteor.com/ | /bin/sh"
   - "npm install"
-  - "grunt sauce"
+  - "grunt travis"
 services:
   - "mongodb"
