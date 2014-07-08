@@ -1,0 +1,2 @@
+ProjectConfiguration = {};
+ProjectConfiguration.projectName = "Sportbets";

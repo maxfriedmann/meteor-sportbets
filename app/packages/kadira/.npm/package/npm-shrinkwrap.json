@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "debug": {
+      "version": "0.7.4"
+    },
+    "nodefly-uvmon": {
+      "version": "0.0.7"
+    }
+  }
+}

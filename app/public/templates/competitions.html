@@ -1,0 +1,79 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+	<h2>{{i18n("competition.title")}}</h2>
+
+	<div class="row" ng-repeat="competition in competitions" align="center">
+		<div class="col-md-2 hidden-xs">
+			<i class="huge circular trophy icon"></i>
+		</div>
+		<div class="col-md-8 col-xs-12" align="left">
+			<div class="col-xs-12">
+				<div class="col-xs-2 visible-xs">
+					<h2>
+						<i class="huge circular trophy icon"></i>
+					</h2>
+				</div>
+				<div class="col-xs-10">
+					<h2>{{openligadbI18n(competition.name)}}</h2>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-6">
+				<div class="col-md-7 col-xs-9">{{i18n("competition.bets")}}</div>
+				<div class="col-md-5 col-xs-3">
+					<span class="badge" ng-show="competition.totalBets != undefined">{{competition.totalBets}}</span>
+					<span ng-show="competition.totalBets == undefined"><img
+						src="/images/ajax-loader.gif" width="20px" /></span>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-6">
+				<div class="col-md-7 col-xs-9">{{i18n("competition.players")}}</div>
+				<div class="col-md-3 col-xs-3">
+					<span class="badge" ng-show="competition.totalPlayers != undefined">{{competition.totalPlayers}}</span>
+					<span ng-show="competition.totalPlayers == undefined"><img
+						src="/images/ajax-loader.gif" width="20px" /></span>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-6">
+				<div class="col-md-7 col-xs-9">{{i18n("competition.matches")}}</div>
+				<div class="col-md-3 col-xs-3">
+					<span class="badge" ng-show="competition.totalMatches != undefined">{{competition.totalMatches}}</span>
+					<span ng-show="competition.totalMatches == undefined"><img
+						src="/images/ajax-loader.gif" width="20px" /></span>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-6">
+				<div class="col-md-7 col-xs-9">{{i18n("competition.finished")}}</div>
+				<div class="col-md-3 col-xs-3">
+					<span class="badge"
+						ng-show="competition.totalFinishedMatches != undefined">{{competition.totalFinishedMatches}}</span>
+					<span ng-show="competition.totalFinishedMatches == undefined"><img
+						src="/images/ajax-loader.gif" width="20px" /></span>
+				</div>
+			</div>
+		</div>
+		<div class="visible-xs">
+			<p>&nbsp;</p>
+		</div>
+		<div class="col-md-2 col-xs-12" align="left center">
+			<button class="btn btn-primary btn-block helptext-left"
+				title="Show matches and place bets for this competition"
+				ng-click='openPath("/competitions/" + competition.name + "/groups/special-upcomingmatches")'>{{i18n("competition.showmatches")}}</button>
+			<button class="btn btn-primary btn-block helptext-left" title="Show Ranking and access Bet Group Functionality"
+				ng-click='openPath("/competitions/" + competition.name + "/ranking")'>{{i18n("competition.showranking")}}</button>
+			<button class="btn btn-primary btn-block helptext-left"
+				title="Show Ranking and access Bet Group Functionality"
+				ng-click='openPath("/competitions/" + competition.name + "/specialbets")'>{{i18n("competition.showspecialbets")}}</button>
+		</div>
+		<div class="col-xs-12" ng-if="!$last">
+			<div class="ui horizontal icon divider">
+				<i class="circular trophy icon"></i>
+			</div>
+		</div>
+	</div>
+
+
+	<div align="center" ng-if="!competitionsLoaded">
+		<img src="/images/ajax-loader.gif" /> Loading competitions...
+	</div>
+</div>

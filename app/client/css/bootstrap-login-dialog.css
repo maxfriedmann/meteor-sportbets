@@ -1,0 +1,12 @@
+#login-buttons a,.accounts-dialog a {
+	color: #EEEEEE;
+}
+
+#login-buttons.login-buttons-dropdown-align-right .login-close-text,#login-buttons #signup-link,#login-buttons #forgot-password-link,#login-buttons #back-to-login-link
+	{
+	color: black;
+}
+
+#login-buttons .login-button,.accounts-dialog .login-button {
+	background-color: #4B5367;
+}

@@ -1,0 +1,29 @@
+@import url(https://fonts.googleapis.com/css?family=Dosis);
+
+body {
+	margin: 0px;
+	padding: 0px;
+	background-position: top;
+	background-repeat: repeat-x;
+	background-color: #4B5367;
+	font-size: 16px;
+	font-family: "Dosis";
+	height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+	body {
+		background-color: #FFF;
+	}
+}
+
+.smallText
+{
+	font-size: 10px;
+}
+
+pre
+{
+	font-size: 16px;
+	font-family: "Dosis";
+}

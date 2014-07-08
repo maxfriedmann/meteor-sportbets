@@ -1,0 +1,111 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+
+
+	<div class="col-xs-12 col-md-4 col-lg-3 pull-right" align="right">
+		<button class="btn btn-primary" ng-click="openPath('/competitions/' + competition.name)">
+			<i class="gamepad icon"></i> {{i18n("competition.showmatches")}}
+		</button>
+		<button class="btn btn-primary" ng-click="openPath('/competitions/' + competition.name + '/specialbets')">
+			<i class="empty star icon"></i> {{i18n("competition.specialbets")}}
+		</button>
+		<hr />
+		<div ng-if="competition.groups.length > 1" align="right">
+			<form class="form-horizontal" role="form">
+				<div class="form-group helptext-bottom" title="Filter all matches by groups/days/weekends/rounds" align="right">
+					<label class="col-sm-3 control-label" for="competitionGroupSelector">{{i18n("competition.filter")}}</label>
+					<div class="col-sm-7">
+						<select id="competitionGroupSelector" class="form-control" ng-model="selectedGroup" ng-options='openligadbI18n(group.group_name) for group in competition.groups' ng-change="updateSelectedGroup(selectedGroup)"></select>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-8 col-xs-12">
+			<h2>
+				{{openligadbI18n(competition.name)}} {{i18n("breadcrumb.ranking")}} <span ng-if="betGroup != undefined">for {{betGroup.name}}</span>
+			</h2>
+			<h4 ng-if="betGroup != undefined">{{betGroup.description}}</h4>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-9 col-xs-12 helptext-left" title="Ranking for current Bet Group">
+			<div class="col-md-12 col-xs-12">
+				<div class="col-md-1 col-xs-1 nopadding" align="center">
+					<i class="hidden-xs big signal icon"></i> <i class="visible-xs small signal icon"></i>
+				</div>
+				<div class="col-md-1 col-xs-1 nopadding" align="center">
+					<i class="hidden-xs big trophy icon"></i> <i class="visible-xs small trophy icon"></i>
+				</div>
+				<div class="col-md-7 col-xs-7  nopadding">
+					<i class="hidden-xs big user icon"></i> <i class="visible-xs small user icon"></i>
+				</div>
+				<div class="col-md-3 col-xs-3">
+					<i class="hidden-xs big globe icon"></i> <i class="visible-xs small globe icon"></i>
+				</div>
+			</div>
+
+			<div ng-repeat="rank in ranking | orderBy : 'points' : true" class="col-md-12 col-xs-12">
+				<div class="col-md-1 col-xs-1 ranking-points  nopadding" align="center">
+					<span ng-show="!samePointsAsLastPosition(rank.points)">{{($index+1)}}.</span>
+				</div>
+				<div class="col-md-1 col-xs-1 ranking-points  nopadding" align="center">{{rank.points}}</div>
+				<div class="col-md-7 col-xs-7  nopadding" style="overflow: hidden">
+					<div style="overflow: hidden; width: 30px; padding-left: 5px" class="col-md-1 hidden-xs nopadding">
+						<img class="circular ui image" style="display: inline" height="25px" src="{{rank.user.profile.picture}}" />
+					</div>
+					<div style="overflow: hidden; width: 30px;" class="visible-xs col-xs-1 nopadding">
+						<img class="circular ui image" style="display: inline" height="20px" src="{{rank.user.profile.picture}}" />
+					</div>
+					<div class="col-md-11">
+						<a href="/statistics/players/{{rank.user._id}}-{{rank.user.nickname}}">{{rank.user.nickname}}</a>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-3  ">
+					<span ng-if="onlineUsers[rank.user._id]">Online</span>
+				</div>
+			</div>
+
+			<div class="col-md-12 col-xs-12" ng-if="ranking != undefined && ranking.length == 0">
+				<div class="alert alert-warning">
+					<i class="big frown icon"></i>{{i18n("errors.norankingyet")}}
+				</div>
+			</div>
+			<div class="col-md-12 col-xs-12" ng-if="ranking == undefined" align="center">
+				<img src="/images/ajax-loader.gif" /> {{loadingMessage}}
+			</div>
+
+		</div>
+		<div class="col-md-3 col-xs-12" ng-show="!contentOnlyMode">
+
+			<p>&nbsp;</p>
+			<div class="panel panel-default" ng-if="betGroup.prices != undefined && betGroup.prices.length > 0">
+				<div class="panel-heading">Prizes</div>
+				<div class="panel-body">
+					<div>
+						<pre>{{betGroup.prices}}</pre>
+					</div>
+				</div>
+			</div>
+			<div ng-if="betGroup.prices != undefined && betGroup.prices.length > 0">
+				<p>&nbsp;</p>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Bet Groups</div>
+				<div class="panel-body">
+					<button class="btn btn-success btn-block helptext-left" ng-if="showjoinbutton" title="Click this button to join this Bet Group" ng-click="joinBetGroup()">Join this group</button>
+					<button class="btn btn-primary btn-block helptext-left" title="Click this button to invite other users to this Bet Group" ng-if="betGroup != undefined" ng-click="inviteUsers()">Invite Users</button>
+					<p>&nbsp;</p>
+					<label class="control-label" for="betGroupSelector">{{i18n("betgroups.selectbetgroup")}}</label> <select id="betGroupSelector" class="form-control" ng-model="betGroup" ng-options='group.name for group in betGroups' ng-if="betGroups != undefined && betGroups.length > 1" ng-change="updateSelectedBetGroup(betGroup)"></select>
+					<div ng-if="betGroups == undefined || betGroups.length <= 1">There are no bet groups available! Create one today!</div>
+					<i class="add sign box icon"></i> <a href="/betgroups/new/{{competition._id}}" class="helptext-bottom" title="Click this button to create a new bet group">Create new Bet Group</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

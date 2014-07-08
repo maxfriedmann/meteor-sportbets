@@ -1,0 +1,154 @@
+<project default="backup">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
+	<tstamp>
+		<format property="today" pattern="yyyy-MM-dd-HH-mm" />
+	</tstamp>
+
+	<target name="backup">
+		<backup />
+	</target>
+
+	<macrodef name="backup">
+		<sequential>
+			<if>
+				<not>
+					<isset property="source" />
+				</not>
+				<then>
+					<fail message="No source parameter given" />
+				</then>
+			</if>
+			
+			<getMongoStuff url="${source}" />
+
+			<mkdir dir="backups" />
+			<mkdir dir="backups/${today}" />
+
+			<property name="path" value="backups/${today}" />
+			<property name="databaseDump" value="${path}/${meteor.db}" />
+
+			<echo message="mongodump -h ${meteor.dburl} --db ${meteor.db} -u ${meteor.user} -p ${meteor.password} --out ${path}" />
+
+			<exec executable="cmd.exe" failonerror="false">
+				<arg value="/c" />
+				<arg value="mongodump -h ${meteor.dburl} --db ${meteor.db} -u ${meteor.user} -p ${meteor.password} --out ${path}" />
+			</exec>
+		</sequential>
+	</macrodef>
+
+
+
+	<target name="restore">
+		<getMongoStuff url="${destination}" />
+
+		<if>
+			<not>
+				<isset property="databaseDump" />
+			</not>
+			<then>
+				<fail message="No databaseDump parameter given" />
+			</then>
+		</if>
+
+		<echo message="mongorestore -h ${meteor.dburl} -u ${meteor.user} -p ${meteor.password} --drop --db ${meteor.db} ${databaseDump}" />
+
+		<exec executable="cmd.exe" failonerror="false">
+			<arg value="/c" />
+			<arg value="mongorestore -h ${meteor.dburl} -u ${meteor.user} -p ${meteor.password} --drop --db ${meteor.db} ${databaseDump}" />
+		</exec>
+	</target>
+
+	<target name="localrestore">
+		<if>
+			<not>
+				<isset property="databaseDump" />
+			</not>
+			<then>
+				<fail message="No databaseDump parameter given" />
+			</then>
+		</if>
+
+		<echo message="mongorestore --db meteor -h localhost --port 3001 --drop ${databaseDump}" />
+
+		<exec executable="cmd.exe" failonerror="false">
+			<arg value="/c" />
+			<arg value="mongorestore --db meteor -h localhost --port 3001 --drop ${databaseDump}" />
+		</exec>
+	</target>
+
+	<target name="deploy">
+		<if>
+			<not>
+				<isset property="destination" />
+			</not>
+			<then>
+				<fail message="No destination parameter given" />
+			</then>
+		</if>
+
+		<exec executable="cmd.exe" failonerror="false">
+			<arg value="/c" />
+			<arg value="meteor deploy ${destination}" />
+		</exec>
+
+	</target>
+
+	<target name="clean">
+		<if>
+			<not>
+				<isset property="destination" />
+			</not>
+			<then>
+				<fail message="No destination parameter given" />
+			</then>
+		</if>
+
+		<exec executable="cmd.exe" failonerror="false">
+			<arg value="/c" />
+			<arg value="meteor deploy ${destination} --delete" />
+		</exec>
+
+	</target>
+
+	<target name="completeRestoreFromSourceToDestination" depends="clean,deploy,backup,restore" />
+
+	<macrodef name="getMongoStuff">
+		<attribute name="url" />
+		<sequential>
+			<echo message="Getting MongoDB access for url : @{url}" />
+
+			<var name="meteor.out" unset="true" />
+
+			<exec executable="cmd.exe" failonerror="false" outputproperty="meteor.out">
+				<arg value="/c" />
+				<arg value="meteor mongo --url @{url}" />
+			</exec>
+			<echo message="Meteor URL : ${meteor.out}" />
+
+			<if>
+				<equals arg1="${meteor.out}" arg2="" />
+				<then>
+					<fail message="Did not hear back from meteor.com, try again!!!" />
+				</then>
+			</if>
+
+			<propertyregex override="true" property="meteor.user" input="${meteor.out}" regexp="mongodb://(.*):(.*):(.*)" select="\1" casesensitive="false" />
+			<propertyregex override="true" property="meteor.password" input="${meteor.out}" regexp="mongodb://(.*):(.*)@(.*):(.*)/(.*)" select="\2" casesensitive="false" />
+			<propertyregex override="true" property="meteor.dburl" input="${meteor.out}" regexp="mongodb://(.*):(.*)@(.*)/(.*)" select="\3" casesensitive="false" />
+			<propertyregex override="true" property="meteor.db" input="${meteor.out}" regexp="mongodb://(.*):(.*)@(.*)/(.*)" select="\4" casesensitive="false" />
+
+			<echo message="User     : ${meteor.user}" />
+			<echo message="Password : ${meteor.password}" />
+			<echo message="DB URL   : ${meteor.dburl}" />
+			<echo message="DB       : ${meteor.db}" />
+		</sequential>
+	</macrodef>
+
+
+
+
+
+
+</project>

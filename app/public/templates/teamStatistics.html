@@ -1,0 +1,165 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+
+	<h2>{{i18n("statistics")}} - {{statisticName}}</h2>
+
+	<div class="row">
+		<div class="col-md-6 col-xs-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">Average Goals per Game</div>
+				<div class="panel-body" align="center">
+					<h1>{{averageGoals}}</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-xs-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">Average Points per Game</div>
+				<div class="panel-body" align="center">
+					<h1>{{averagePoints}}</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 col-xs-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">Last 10 Games available
+					Competitions</div>
+				<div class="panel-body">
+					<div class="row" ng-repeat="match in history">
+						<!-- <div class="col-md-2">{{matchdata.league_name}}</div>  -->
+						<div class="col-md-12">
+							<div class="col-xs-12 matchdataRow">
+								<div class="col-md-3 col-xs-12">{{match.match_date_time_utc
+									| date : "EEEE, MMMM d, y, HH:mm"}}</div>
+								<div class="col-md-6 col-xs-12 hidden-xs">
+									<div class="col-md-1 col-xs-1">
+										<img src="{{match.getHomeFlag()}}" height="28px" />
+									</div>
+									<div class="col-md-3 col-xs-3 team-name-label pointer"
+										ng-click="gotoPath('/statistics/teams/' + match.id_team1 + '-' + match.name_team1)">{{openligadbI18n(match.name_team1)}}</div>
+									<div class="col-md-3 col-xs-2 match-result-label"
+										align="center" ng-if="match.match_is_finished">{{match.points_team1}}
+										: {{match.points_team2}}</div>
+									<div class="col-md-3 col-xs-2 match-result-label"
+										align="center" ng-if="!match.match_is_finished">- : -</div>
+									<div class="col-md-3 col-xs-3 team-name-label pointer"
+										align="right"
+										ng-click="gotoPath('/statistics/teams/' + match.id_team2 + '-' + match.name_team2)">{{openligadbI18n(match.name_team2)}}</div>
+									<div class="col-md-1 col-xs-1" align="right">
+										<img src="{{match.getAwayFlag()}}" width="28px" />
+									</div>
+								</div>
+
+								<!-- mobile -->
+								<div>
+									<div class="col-xs-12 visible-xs">
+										<div class="col-xs-2">
+											<img src="{{match.getHomeFlag()}}" height="28px" />
+										</div>
+										<div class="col-xs-5">{{openligadbI18n(match.name_team1)}}</div>
+										<div class="col-xs-1" ng-if="match.match_is_finished">{{match.points_team1}}</div>
+										<div class="col-xs-1" ng-if="! match.match_is_finished">-</div>
+										<div class="col-xs-4">
+											<div class="row">
+												<div class="col-xs-4">
+													<span class="glyphicon glyphicon-minus"
+														style="cursor: pointer"
+														ng-click="placeDeltaBet(match,-1,0)"
+														ng-if="match.isBetable() && !match.bet.locked"></span>
+												</div>
+												<div class="col-xs-4" align="center">
+													<div
+														class="sportbets-betview-goals sportbets-betview-goals-{{match.bet.homegoals}}"></div>
+												</div>
+												<div class="col-xs-4">
+													<span class="glyphicon glyphicon-plus"
+														style="cursor: pointer"
+														ng-click="placeDeltaBet(match,1,0)"
+														ng-if="match.isBetable() && !match.bet.locked"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12 visible-xs">
+										<div class="col-xs-2">
+											<img src="{{match.getAwayFlag()}}" height="28px" />
+										</div>
+										<div class="col-xs-5">{{openligadbI18n(match.name_team2)}}</div>
+										<div class="col-xs-1" ng-if="match.match_is_finished">{{match.points_team2}}</div>
+										<div class="col-xs-1" ng-if="! match.match_is_finished">-</div>
+										<div class="col-xs-3">
+											<div class="row">
+												<div class="col-xs-4">
+													<span class="glyphicon glyphicon-minus"
+														style="cursor: pointer"
+														ng-click="placeDeltaBet(match,0,-1)"
+														ng-if="match.isBetable() && !match.bet.locked"></span>
+												</div>
+												<div class="col-xs-4" align="center">
+													<div
+														class="sportbets-betview-goals sportbets-betview-goals-{{match.bet.awaygoals}}"></div>
+												</div>
+												<div class="col-xs-4">
+													<span class="glyphicon glyphicon-plus"
+														style="cursor: pointer"
+														ng-click="placeDeltaBet(match,0,1)"
+														ng-if="match.isBetable() && !match.bet.locked"></span>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xs-12" align="center">
+											<img ng-if="match.bet.points > 0"
+												src="/images/trophys/{{match.bet.points}}.png" height="40px"
+												title="{{match.bet.points}} Point(s)" />
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-3 col-xs-12 hidden-xs" align="center">
+									<!-- on all other devices we're showing the bet stake here -->
+									<div class="col-xs-12">
+										<div class="col-md-2 col-xs-6" align="center">
+											<i class="arrow up icon place-bet-button"
+												style="cursor: pointer" ng-click="placeDeltaBet(match,1,0)"
+												ng-if="match.isBetable() && !match.bet.locked"></i> <i
+												class="arrow down icon place-bet-button"
+												style="cursor: pointer" ng-click="placeDeltaBet(match,-1,0)"
+												ng-if="match.isBetable() && !match.bet.locked"></i>
+										</div>
+
+										<div class="col-md-2 col-xs-6" align="center">
+											<div
+												class="sportbets-betview-goals sportbets-betview-goals-{{match.bet.homegoals}}"></div>
+										</div>
+
+										<div class="col-md-2 col-xs-6" align="center">
+											<div
+												class="sportbets-betview-goals sportbets-betview-goals-{{match.bet.awaygoals}}"></div>
+										</div>
+
+										<div class="col-md-2 col-xs-6" align="center">
+											<i class="arrow up icon place-bet-button"
+												style="cursor: pointer" ng-click="placeDeltaBet(match,0,1)"
+												ng-if="match.isBetable() && !match.bet.locked"></i> <i
+												class="arrow down icon place-bet-button"
+												style="cursor: pointer" ng-click="placeDeltaBet(match,0,-1)"
+												ng-if="match.isBetable() && !match.bet.locked"></i>
+										</div>
+
+										<div class="col-md-3 col-xs-12">
+											<img ng-if="match.bet.points > 0"
+												src="/images/trophys/{{match.bet.points}}_{{match.multiplier}}.png"
+												height="40px" title="{{match.bet.points}} Point(s)" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

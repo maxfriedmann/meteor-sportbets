@@ -1,0 +1,32 @@
+<p>&nbsp;</p>
+
+<div class="sportbets-mainarea">
+
+	<h2>Localization</h2>
+
+	Cool that you want to add a new language, that's awesome! We are using <a href="https://atmospherejs.com/package/just-i18n">just-i18n</a> for localizing Sportbets, what you can see below is the content of the current selected language.
+	<p>&nbsp;</p>
+	To add a new language you have to :
+	<ul>
+		<li>Select your favorite, already existing source language (English is always the most complete one!)</li>
+		<li>Copy the json from below</li>
+		<li>Translate all values</li>
+		<li>Test your localization below (no worries, this will only change the language in your browser and will get reverted after a page refresh)</li>
+		<li>Send the json to max@hybris.com</li>
+	</ul>
+
+	<p>&nbsp;</p>
+
+	<div class="panel panel-success">
+		<div class="panel-heading">Localization for {{currentLanguage}} ({{translationStatus}} translated)</div>
+		<div class="panel-body">
+			<div align="right">
+				<button class="btn btn-warning" ng-click="editMode = true" ng-disabled="editMode">Edit (locally)</button>
+				<button class="btn btn-success"  ng-disabled="!editMode" ng-click="applyLanguage()">Apply (locally)</button>
+			</div>
+			<p>&nbsp;</p>
+			<pre class="prettyprint" ng-if="!editMode">{{languageString}}</pre>
+			<textarea rows="40" style="width: 100%" ng-if="editMode" ng-model="language.newOne"></textarea>
+		</div>
+	</div>
+</div>

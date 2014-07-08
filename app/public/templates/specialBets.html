@@ -1,0 +1,86 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+
+	<div class="row">
+		<div class="col-xs-12 col-md-4 col-lg-3 pull-right" align="right">
+			<button class="btn btn-primary" ng-click="openPath('/competitions/' + competition.name)">
+				<i class="gamepad icon"></i> {{i18n("competition.showmatches")}}
+			</button>
+			<button class="btn btn-primary" ng-click="openPath('/competitions/' + competition.name + '/ranking')">
+				<i class="trophy icon"></i> {{i18n("competition.showranking")}}
+			</button>
+			<hr />
+		</div>
+
+		<div class="col-md-8 pull-left">
+			<h2>{{openligadbI18n(competition.name)}} - {{i18n("competition.specialbets")}}</h2>
+		</div>
+	</div>
+
+	<div class="row no-select">
+		<div class="col-xs-12" ng-repeat="competitionQuestion in competitionQuestions">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-11">
+							<h3>{{competitionQuestion.title}}</h3>
+						</div>
+						<div class="col-md-1" align="center">
+							<h2>{{competitionQuestion.points}}</h2>
+							{{i18n('competition.points')}}
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="col-xs-12" ng-if="competitionQuestion.type == 'competitionTeams'">
+						My Answer : <select ng-model="answers[competitionQuestion._id]" ng-options="competitionTeam.id as competitionTeam.name for competitionTeam in teamsForCompetition | orderBy:'name'" ng-disabled="!competitionQuestion.isBetable()"></select>
+					</div>
+					<div class="col-xs-12" ng-if="competitionQuestion.type == 'integer'">
+						My Answer : <input type="number" ng-model="answers[competitionQuestion._id]" ng-disabled="!competitionQuestion.isBetable()">
+					</div>
+
+					<div class="col-xs-12">
+						<div class="pull-right">
+							<button class="btn btn-success btn-lg" ng-click="saveAnswer(competitionQuestion)" ng-disabled="!competitionQuestion.isBetable()">Save my answer</button>
+						</div>
+					</div>
+
+					<i ng-show="competitionQuestion.duedate != undefined">This special bet can be changed until : {{competitionQuestion.duedate | date : "EEEE, MMMM d, y, HH:mm"}}</i>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-12 alert-warning" ng-if="competitionQuestions == undefined || competitionQuestions.length == 0">
+			<i class="big frown icon"></i> Seems like there aren't any special bets for this competition yet!
+		</div>
+
+		<p>&nbsp;</p>
+
+		<div class="panel panel-default" ng-if="isAdministrator">
+			<div class="panel-heading">Add new competition question</div>
+			<div class="panel-body">
+				<form role="form">
+					<div class="form-group">
+						<label for="questionTitle">Question Title</label> <input ng-model="newQuestion.title" class="form-control" id="questionTitle">
+					</div>
+					<div class="form-group">
+						<label for="questionAnswerType">Question Answer Type</label> <select ng-model="newQuestion.answerType" class="form-control" id="questionAnswerType">
+							<option value="integer">Integer</option>
+							<option value="competitionTeams">CompetitionTeams</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="questionAnswerPoints">Question Points</label> <input type="number" ng-model="newQuestion.answerPoints" class="form-control" id="questionAnswerPoints">
+					</div>
+					<div class="form-group">
+						<label for="questionDueDate">Due Date</label>
+						<datepicker ng-model="newQuestion.duedate" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+						<timepicker ng-model="newQuestion.duedate" show-meridian="false"></timepicker>
+					</div>
+					<button type="submit" class="btn btn-default" ng-click="addQuestion()">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>

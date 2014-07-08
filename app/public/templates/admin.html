@@ -1,0 +1,64 @@
+<p>&nbsp;</p>
+
+<div class="sportbets-mainarea">
+
+	<h2>Administration Area</h2>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Email List</div>
+		<div class="panel-body">
+			<div class="btn btn-success btn-block" ng-click="loadEmails()">Get All Emails</div>
+			<div ng-repeat="email in emails track by $index">{{email}}</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Check doubled matches</div>
+		<div class="panel-body">
+			<div class="btn btn-success btn-block" ng-click="getDoubledMatches()">Get Doubled Matches</div>
+			<div ng-repeat="match in doubledMatches track by $index">{{match}}</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="progress-indicator" id="doubledBetsProgress"></div>
+		<div class="panel-heading">Check doubled bets</div>
+		<div class="panel-body">
+			<div class="btn btn-success btn-block" ng-click="getDoubledBets()">Get Doubled Bets</div>
+			<div class="btn btn-danger btn-block" ng-click="fixDoubledBets()">Fix Doubled Bets</div>
+			<div class="row">
+				<div class="col-md-3">
+					<b>Owner</b>
+				</div>
+				<div class="col-md-2">
+					<b>Bet ID</b>
+				</div>
+				<div class="col-md-1">
+					<b>Homegoals</b>
+				</div>
+				<div class="col-md-1">
+					<b>Awaygoals</b>
+				</div>
+				<div class="col-md-1">
+					<b>Points</b>
+				</div>
+				<div class="col-md-4">
+					<b>Flags</b>
+				</div>
+			</div>
+			<div ng-repeat="bets in doubledBets track by $index">
+				<div class="row" ng-repeat="bet in bets track by $index">
+					<div class="col-md-3">{{bet.owner}}</div>
+					<div class="col-md-2">{{bet.id}}</div>
+					<div class="col-md-1">{{bet.homegoals}}</div>
+					<div class="col-md-1">{{bet.awaygoals}}</div>
+					<div class="col-md-1">{{bet.points}}</div>
+					<div class="col-md-4">
+						<span class="badge alert-danger" ng-if="!$first">deletable</span>
+					</div>
+				</div>
+				<hr>
+			</div>
+		</div>
+	</div>
+</div>

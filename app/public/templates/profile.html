@@ -1,0 +1,43 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+	<h2>{{i18n(breadcrumb.profile)}}</h2>
+
+	<div class="row">
+		<div class="col-md-4 col-xs-12" align="center">
+			<div class="col-xs-12">
+				<img class="ui image" height="128px"
+					src="{{account.profilePicture}}" />
+			</div>
+			<div class="col-xs-12">
+				<button class="btn btn-primary btn-block" ng-click="randomAvatar()">Random
+					Avatar</button>
+				<!-- <button class="btn btn-primary btn-block" ng-click="randomAvatar()">Use my Gravatar</button> -->
+				<button class="btn btn-primary btn-block" ng-click="useFacebook()" ng-if="facebookEnabled">Use my Facebook Profile Picture</button>
+			</div>
+		</div>
+		<div class="col-md-8 col-xs-12">
+
+			<form role="form" name="accountForm">
+				<div class="form-group">
+					<label for="nickname">Nickname</label> <input type="text"
+						class="form-control" id="nickname"
+						placeholder="Enter your Nickname" ng-model="account.nickname">
+				</div>
+			</form>
+
+
+		</div>
+		<div class="col-xs-12">
+			<div class="pull-right">
+				<button ng-click="restore()"
+					ng-disabled="!accountForm.$dirty && !dirty"
+					class="btn btn-warning">Cancel</button>
+				<button ng-click="saveAccount()"
+					ng-disabled="!accountForm.$dirty && !dirty"
+					class="btn btn-danger">Save</button>
+			</div>
+		</div>
+	</div>
+
+</div>

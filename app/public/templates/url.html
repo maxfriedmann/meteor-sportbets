@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+	<div class="panel-heading" align="center">
+		<h2>{{info.title}}
+	</div>
+
+	<div class="panel-body">
+		<div class="col-xs-3">
+			<i class="huge info icon"></i>
+		</div>
+		<div class="col-xs-8">{{info.content}}</div>
+		<div class="col-xs-8 ui input"><input value="{{info.url}}"></div>
+	</div>
+
+	<div class="panel-footer" align="right">
+		<input type="button" class="btn btn-success" value="{{info.ok}}"
+			ng-click="$close(true)" />
+	</div>
+
+</div>

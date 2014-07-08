@@ -1,0 +1,49 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+
+	<div class="row" ng-if="loggedin">
+
+		<h2>{{i18n("account.merge.title")}}</h2>
+
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h4>DISCLAIMER / WARNING / READ THAT, REALLY</h4>
+			</div>
+
+			<div class="panel-body">
+				Merging Accounts is a fun thing, if it works. To be on the 100% safe side, we applied some rules :
+				<ul>
+					<li>All bets of the account you're logged in with right now will survive</li>
+					<li><span class="text-danger"><b>All bets</b></span> of the account you will merge into this one will get <span class="text-danger"><b>DELETED</b></span> (this obviously only applies if you ever logged into with that account and place a bet...)</li>
+					<li>After the merge you can login with <b>both</b> accounts. After another merge with all 3, etc.
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="alert alert-success" ng-if="successMessage">{{successMessage}}</div>
+
+		<div class="row">
+
+			<div class="account-merge-box col-md-6" ng-repeat="account in accounts" align="center">
+				<div class="col-md-12">
+					<h3><i class="huge {{account.icon}} icon"></i>{{account.name}} {{account.active}}</h3>
+				</div>
+				<div class="col-md-12">
+				{{account.active}}
+					<button class="btn btn-lg btn-primary btn-block" ng-click="account.action()" ng-if="!status[account.key]">Merge</button>
+					<button class="btn btn-lg btn-success btn-block" disabled="true" ng-if="status[account.key]">Setup Complete</button>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<div class="row" ng-if="!loggedin">
+		<h2>{{i18n("account.merge.title")}}</h2>
+		To be able to merge accounts, please log in with the account you want to keep. Afterwards you can merge other accounts into that one.
+	</div>
+</div>

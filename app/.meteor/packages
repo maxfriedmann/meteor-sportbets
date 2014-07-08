@@ -1,0 +1,36 @@
+# Meteor packages used by this project, one per line.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+semantic-ui
+connection-banner
+nprogress
+auto-nprogress
+bootstrap-alerts
+#bootstrap
+bootstrap-3
+standard-app-packages
+accounts-base
+accounts-facebook
+accounts-twitter
+accounts-google
+accounts-merge
+accounts-password
+accounts-ui-bootstrap-3
+#accounts-ui
+jquery
+random
+font-awesome
+profile-online
+http
+less
+just-i18n
+kadira
+ganalytics
+accounts-github
+email
+#appcache
+latency
+synced-cron
+subs-manager

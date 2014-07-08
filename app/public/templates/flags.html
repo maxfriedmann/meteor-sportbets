@@ -1,0 +1,16 @@
+<p>&nbsp;</p>
+
+<div class="sportbets-mainarea">
+
+	<div class="panel panel-success">
+		<div class="panel-heading">Flags Mapping</div>
+		<div class="panel-body row">
+			<div ng-repeat="(key, value) in missingFlags track by $index">
+				<div class="col-md-12" ng-if="value">FlagMapping[{{key}}] = "/images/flags/.png";			// {{value}}</div>
+			</div>
+			<div ng-if="missingFlags.length == 0" align="center">
+				There are currently no unmapped Flags!
+			</div>
+		</div>
+	</div>
+</div>

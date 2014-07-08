@@ -1,0 +1,39 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+
+	<div class="row">
+		<div class="col-md-6">
+			<h2 ng-if="createMode">{{i18n("betgroups.createnew")}}</h2>
+			<h2 ng-if="!createMode">{{i18n("betgroups.title")}}</h2>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-xs-12">
+			<form role="form" name="groupForm">
+				<div class="form-group col-md-6 col-xs-12">
+					<label for="groupname">{{i18n("betgroups.groupname")}}</label> <input type="text" class="form-control" id="groupname" placeholder="Enter the Group Name" ng-model="group.name">
+				</div>
+				<div class="form-group col-md-6 col-xs-12">
+					<label for="groupname">{{i18n("betgroups.groupdescription")}}</label>
+					<textarea type="text" class="form-control" id="groupdescription" placeholder="Enter the Group Description" ng-model="group.description"></textarea>
+				</div>
+				<div class="form-group col-md-6 col-xs-12">
+					<label for="competitionselector">{{i18n("betgroups.groupforcompetition")}}</label> <select class="form-control" id="competitionselector" ng-model="forCompetition" ng-options="openligadbI18n(competition.name) for competition in competitions"></select>
+
+				</div>
+				<div class="form-group col-md-6 col-xs-12">
+					<label for="groupprices">{{i18n("betgroups.groupprices")}}</label>
+					<textarea type="text" class="form-control" id="groupprices" placeholder="Enter the Group Prices" ng-model="group.prices"></textarea>
+				</div>
+
+				<div class="col-md-12" align="right">
+					<button ng-click="cancel()" ng-disabled="!groupForm.$dirty" class="btn btn-warning">Cancel</button>
+					<button ng-click="save()" ng-disabled="!groupForm.$dirty" class="btn btn-danger">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div ng-if="createMode">Note : You cannot change the group name and the competition afterwards!</div>
+</div>

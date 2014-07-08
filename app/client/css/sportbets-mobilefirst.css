@@ -1,0 +1,59 @@
+@media only screen and (max-width: 768px) {
+	i.icon {
+		margin: 0;
+	}
+	.sportbets-usertoolbar {
+		top: 0px;
+	}
+	.navbar-nav>li>a {
+		padding-top: 2px;
+	}
+	.navbar-nav .open .dropdown-menu {
+		background-color: #FFF;
+		border-radius: 0px;
+		border-bottom-left-radius: 0px;
+		border-bottom-right-radius: 0px;
+		box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+		border: 1px solid #ccc;
+		padding: 5px;
+	}
+	.sportbets-mainarea {
+		padding: 5px;
+	}
+	.sportbets-betview-goals {
+		margin-top: 0px;
+	}
+	.matchdataRow {
+		
+	}
+	#login-dropdown-list .dropdown-menu {
+		width: 100%
+	}
+	.login-text-and-button {
+		padding: 2px;
+		display: compact;
+	}
+	.navbar-collapse {
+		max-height: 1000px;
+	}
+}
+
+.match-time-mobile {
+	color: #CCC;
+	font-size: 10px;
+	padding: 5px;
+}
+
+.match-row-mobile {
+	padding: 0px;
+	padding-bottom: 10px;
+}
+
+.bet-buttons-mobile {
+	background-color: #999da8;
+	border-color: #6d727c;
+}
+
+.bet-mobile {
+	border-color: #6d727c !important;
+}

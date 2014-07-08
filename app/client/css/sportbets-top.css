@@ -1,0 +1,28 @@
+.sportbets-top-logo {
+	background-image: url(/images/logo.jpg);
+	background-size: 91px 50px;
+	display: table-cell;
+	height: 50px;
+	width: 91px;
+	display: table-cell;
+}
+
+.sportbets-top {
+	background-color : #428bca;
+	height: 40px;
+	width: 100%;
+	position: relative;
+}
+
+@media only screen and (min-width: 768px) {
+	.sportbets-top-logo {
+		background-size: 264px 100px;
+		height: 100px;
+		width: 264px;
+	}
+	.sportbets-top {
+		height: 100px;
+		width: 100%;
+	}
+
+}

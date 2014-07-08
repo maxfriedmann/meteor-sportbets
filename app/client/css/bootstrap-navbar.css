@@ -1,0 +1,11 @@
+.dropdown-toggle,.navbar-nav>li>a {
+	color: #FFF;
+}
+
+.nav>li>a:hover,.nav>li>a:focus {
+	background-color: #3071a9;
+}
+
+.nav .open>a,.nav .open>a:hover,.nav .open>a:focus {
+	background-color: #004f9e;
+}

@@ -1,0 +1,6 @@
+test/node_modules/
+test/tests-reports/
+test/selenium-debug.log
+app/settings.deployment.json
+app/settings.local.json
+app/settings.test.json

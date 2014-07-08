@@ -1,0 +1,79 @@
+<breadcrumb></breadcrumb>
+
+<div class="sportbets-mainarea">
+	<h2>Player Statistic - {{player.nickname}}</h2>
+
+	<div class="row">
+		<div class="col-md-4 col-xs-12" align="center">
+			<div class="col-xs-12">
+				<img class="ui image" height="128px" src="{{player.profile.picture}}" />
+			</div>
+			<div class="col-xs-12">
+				<p>&nbsp;</p>
+				<div class="panel panel-success">
+					<div class="panel-heading">Medals</div>
+					<div class="panel-body">
+						<div class="col-md-4 col-xs-4">
+							<div class="col-md-12" align="center">
+								<img src="/images/trophys/1_1.png" width="30px">
+							</div>
+							<div class="col-md-12" align="center">{{pointCategories["1_1"]}}x</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div class="col-md-12" align="center">
+								<img src="/images/trophys/2_1.png" width="30px">
+							</div>
+							<div class="col-md-12" align="center">{{pointCategories["2_1"]}}x</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div class="col-md-12" align="center">
+								<img src="/images/trophys/3_1.png" width="30px">
+							</div>
+							<div class="col-md-12" align="center">{{pointCategories["3_1"]}}x</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div class="col-md-12" align="center">
+								<img src="/images/trophys/2_2.png" width="30px">
+							</div>
+							<div class="col-md-12" align="center">{{pointCategories["2_2"]}}x</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div class="col-md-12" align="center">
+								<img src="/images/trophys/4_2.png" width="30px">
+							</div>
+							<div class="col-md-12" align="center">{{pointCategories["4_2"]}}x</div>
+						</div>
+						<div class="col-md-4 col-xs-4">
+							<div class="col-md-12" align="center">
+								<img src="/images/trophys/6_2.png" width="30px">
+							</div>
+							<div class="col-md-12" align="center">{{pointCategories["6_2"]}}x</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 col-xs-12">
+			<div class="col-md-4" align="center">
+				<h1>{{points}}</h1>
+				Total Points
+			</div>
+			<div class="col-md-4" align="center">
+				<h1>{{placedBets}}</h1>
+				Total Placed Bets
+			</div>
+			<div class="col-md-4" align="center">
+				<h1>{{finishedBets}}</h1>
+				Finished Bets
+			</div>
+			<div class="col-md-4" align="center">
+				<h1>{{averagePoints}}</h1>
+				Average Points
+			</div>
+			<div class="col-md-4" align="center">
+				<h1>{{pointCategories["0"]}}</h1>
+				Bets with no Points
+			</div>
+		</div>
+	</div>
+</div>

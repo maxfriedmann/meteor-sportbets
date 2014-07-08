@@ -1,0 +1,34 @@
+<div class="sportbets-mainarea">
+
+	<h2>Testing</h2>
+
+	<button class="btn btn-success btn-block" ng-click="runTests()">Run
+		Tests</button>
+
+	<p>&nbsp;</p>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Test Results</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-5">
+					<b>Title</b>
+				</div>
+				<div class="col-md-5">
+					<b>Result</b>
+				</div>
+				<div class="col-md-2">
+					<b>Time</b>
+				</div>
+			</div>
+			<div class="row" ng-repeat="testresult in testresults">
+				<div class="col-md-5">{{testresult.title}}</div>
+				<div class="col-md-5">
+					<span class="badge alert-{{testresult.css}}">{{testresult.result}}</span>
+				</div>
+				<div class="col-md-2">{{testresult.time}}ms</div>
+			</div>
+		</div>
+	</div>
+
+</div>

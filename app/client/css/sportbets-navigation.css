@@ -1,0 +1,17 @@
+.sportbets-navigation {
+	background-color: #0051AC;
+}
+
+@media only screen and (min-width: 768px) {
+	.sportbets-navigation {
+		background-color: transparent;
+	}
+}
+
+.navbar-static-top .navbar-collapse {
+	padding-right: 15px;
+}
+
+.navbar-toggle .icon-bar {
+	background-color: #fff;
+}

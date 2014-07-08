@@ -1,0 +1,24 @@
+<div class="panel panel-danger">
+	<div class="panel-heading" align="center">
+		<h2>Shit... {{error.reason}}
+	</div>
+
+	<div class="panel-body">
+		<div class="col-xs-3">
+			<i class="huge red attention icon"></i>
+		</div>
+		<div class="col-xs-8">{{error.reason}}</div>
+		<div class="col-xs-8" ng-if="error.details != undefined">Reason
+			: {{error.details.reason}}</div>
+		<div class="col-xs-8 label-success" ng-if="success != undefined">{{success}}</div>
+	</div>
+
+	<div class="panel-footer" align="right">
+		<input type="button" class="btn btn-primary"
+			value="Resend Verification E-Mail"
+			ng-if="error.details.details == 'notverified'"
+			ng-click="resendVerificationEmail()" /> <input type="button"
+			class="btn btn-success" value="Ok" ng-click="$close(true)" />
+	</div>
+
+</div>

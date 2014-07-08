@@ -1,0 +1,61 @@
+.mobile-team-ribbon
+{
+	font-size:16px;
+	width: 100%;
+}
+
+
+.sportbets-betview-goals {
+	height: 27px;
+	width: 19px;
+	margin-top: 10px;
+	background-image: url(/images/numbers/numbers_small.png);
+}
+
+.sportbets-betview-goals-small {
+	margin-top: 10px;
+}
+
+.sportbets-betview-goals-null {
+	background-position: 0px;
+}
+
+.sportbets-betview-goals-1 {
+	background-position: -36px;
+}
+
+.sportbets-betview-goals-2 {
+	background-position: -54px;
+}
+
+.sportbets-betview-goals-3 {
+	background-position: -72px;
+}
+
+.sportbets-betview-goals-4 {
+	background-position: -91px;
+}
+
+.sportbets-betview-goals-5 {
+	background-position: -109px;
+}
+
+.sportbets-betview-goals-6 {
+	background-position: -127px;
+}
+
+.sportbets-betview-goals-7 {
+	background-position: -145px;
+}
+
+.sportbets-betview-goals-8 {
+	background-position: -163px;
+}
+
+.sportbets-betview-goals-9 {
+	background-position: -182px;
+}
+
+.sportbets-betview-goals-0 {
+	background-position: -18px;
+}

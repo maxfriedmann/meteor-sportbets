@@ -1,0 +1,11 @@
+<div class="btn-group">
+	<button class="btn {{getButtonClass('matches')}}"
+		ng-click="gotoPath('/')">{{i18n("competition.matches")}}</button>
+	<button class="btn {{getButtonClass('ranking')}}"
+		ng-click="gotoPath('/ranking')">{{i18n("breadcrumb.ranking")}}</button>
+<!-- 	<button class="btn {{getButtonClass('statistics')}}"
+		ng-click="gotoPath('/statistics')">Statistics</button> -->
+	<button class="btn btn-danger"
+		ng-click="updateCompetition(competition)"
+		ng-if="competition.openligadb && isAdministrator()">{{i18n("competition.updatecompetition")}}</button>
+</div>
