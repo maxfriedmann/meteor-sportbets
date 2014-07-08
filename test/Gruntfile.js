@@ -39,7 +39,7 @@ module.exports = function(grunt)
 				},
 				"saucelabs" : {
 					"standalone" : false,
-					"launchUrl" : "http://sportbets-test.meteor.com",
+					"launchUrl" : "http://localhost:3000",
 					"selenium_host" : "ondemand.saucelabs.com",
 					"selenium_port" : 80,
 					"username" : "maximilianfriedmann",
