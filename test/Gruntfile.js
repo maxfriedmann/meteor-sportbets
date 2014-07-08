@@ -27,7 +27,7 @@ module.exports = function(grunt)
 			options: {
 				username: 'maxfriedmann',
 				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
-				identifier: 'tunnel identifier',
+				identifier: 'sportbets',
 				tunnelTimeout: 120 // whatever timeout you want to use
 			},
 			server: {}
@@ -36,7 +36,7 @@ module.exports = function(grunt)
 		    	options: {
 				username: 'maxfriedmann',
 				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
-				identifier: 'tunnel identifier'
+				identifier: 'sportbets'
 			},
 			server: {}
 		},
@@ -68,7 +68,10 @@ module.exports = function(grunt)
 					"selenium_host" : "localhost",
 					"selenium_port" : "4445",
 					"username" : "maxfriedmann",
-					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9"
+					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9",
+					"desiredCapabilities": {
+						"tunnel-identifier" : "sportbets"
+					  }
 				}
 			}
 		}
