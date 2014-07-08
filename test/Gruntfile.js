@@ -76,6 +76,7 @@ module.exports = function(grunt)
 	
 	grunt.loadNpmTasks('grunt-nightwatch');
 	grunt.loadNpmTasks('grunt-shell-spawn');
+	grunt.loadNpmTasks('grunt-sauce-tunnel');
 	grunt.loadNpmTasks('grunt-mkdir');
 	
 	grunt.registerTask('test', [ 'shell:meteor_start', 'nightwatch' ]);
