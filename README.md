@@ -22,8 +22,8 @@ Easy, heh?
 # Testing
 * https://travis-ci.org/maxfriedmann/meteor-sportbets
 
-[![Build Status](https://travis-ci.org/maxfriedmann/meteor-sportbets.svg?branch=develop)](https://travis-ci.org/maxfriedmann/meteor-sportbets)
-
+Develop : [![Build Status](https://travis-ci.org/maxfriedmann/meteor-sportbets.svg?branch=develop)](https://travis-ci.org/maxfriedmann/meteor-sportbets)
+Master :  [![Build Status](https://travis-ci.org/maxfriedmann/meteor-sportbets.svg?branch=master)](https://travis-ci.org/maxfriedmann/meteor-sportbets)
 
 # Issues to solve
 If you want to contribute, please fork the project and do your changes. Afterwards send a pull request!
