@@ -10,6 +10,8 @@
 		"grunt-nightwatch": "0.2.2",
 		"grunt-cli": "0.1.13",
 		"grunt-shell-spawn" : "0.3.0",
-		"grunt-mkdir" : "0.1.1"
+		"grunt-mkdir" : "0.1.1",
+		"grunt-sauce-tunnel" : "0.2.1",
+		"grunt-wait-server" : "0.1.2"
 	}
 }

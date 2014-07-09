@@ -1,0 +1,8 @@
+{
+	"appcache": 
+	{
+		"disabled": true
+	},
+
+	"developerMode": true
+}

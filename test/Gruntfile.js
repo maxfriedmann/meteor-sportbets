@@ -23,7 +23,29 @@ module.exports = function(grunt)
 				},
 			},
 		},
-		
+		sauce_tunnel: {
+			options: {
+				username: 'maxfriedmann',
+				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
+				identifier: 'sportbets-' + process.env.TRAVIS_BUILD_ID,
+				tunnelTimeout: 120 // whatever timeout you want to use
+			},
+			server: {}
+		},
+		sauce_tunnel_stop: {
+		    	options: {
+				username: 'maxfriedmann',
+				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
+				identifier: 'sportbets-' + process.env.TRAVIS_BUILD_ID
+			},
+			server: {}
+		},
+		 waitServer: {
+		    options: {
+		      url: 'http://localhost:3000',
+		      timeout: 180 * 1000
+		    }
+		  },
 		nightwatch : {
 			options : {
 				standalone : true,
@@ -39,11 +61,22 @@ module.exports = function(grunt)
 				},
 				"saucelabs" : {
 					"standalone" : false,
-					"launchUrl" : "http://sportbets-test.meteor.com",
+					"launchUrl" : "http://localhost:3000",
 					"selenium_host" : "ondemand.saucelabs.com",
 					"selenium_port" : 80,
-					"username" : "maximilianfriedmann",
-					"access_key" : "0a685284-2414-45ae-9187-74aafcab04ef"
+					"username" : "maxfriedmann",
+					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9"
+				},
+				"saucelabs_connect" : {
+					"standalone" : false,
+					"launchUrl" : "http://localhost:3000",
+					"selenium_host" : "localhost",
+					"selenium_port" : "4445",
+					"username" : "maxfriedmann",
+					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9",
+					"desiredCapabilities": {
+						"tunnel-identifier" : 'sportbets-' + process.env.TRAVIS_BUILD_ID
+					  }
 				}
 			}
 		}
@@ -51,8 +84,11 @@ module.exports = function(grunt)
 	
 	grunt.loadNpmTasks('grunt-nightwatch');
 	grunt.loadNpmTasks('grunt-shell-spawn');
+	grunt.loadNpmTasks('grunt-sauce-tunnel');
 	grunt.loadNpmTasks('grunt-mkdir');
+	grunt.loadNpmTasks('grunt-wait-server');
 	
 	grunt.registerTask('test', [ 'shell:meteor_start', 'nightwatch' ]);
 	grunt.registerTask('sauce', [ 'mkdir:all', 'nightwatch:saucelabs' ]);
+	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'nightwatch:saucelabs_connect','sauce_tunnel_stop' ]);
 };

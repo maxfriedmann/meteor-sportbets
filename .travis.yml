@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "0.10"
+before_install: 
+  - "npm install -g grunt-cli"
+install:
+  - "cd test"
+  - "curl -L https://install.meteor.com/ | /bin/sh"
+  - "npm install"
+script : 
+  - "grunt travis"
+services:
+  - "mongodb"
