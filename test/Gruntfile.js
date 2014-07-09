@@ -27,7 +27,7 @@ module.exports = function(grunt)
 			options: {
 				username: 'maxfriedmann',
 				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
-				identifier: 'sportbets',
+				identifier: 'sportbets-${TRAVIS_BUILD_ID}',
 				tunnelTimeout: 120 // whatever timeout you want to use
 			},
 			server: {}
@@ -36,7 +36,7 @@ module.exports = function(grunt)
 		    	options: {
 				username: 'maxfriedmann',
 				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
-				identifier: 'sportbets'
+				identifier: 'sportbets-${TRAVIS_BUILD_ID}'
 			},
 			server: {}
 		},
@@ -75,7 +75,7 @@ module.exports = function(grunt)
 					"username" : "maxfriedmann",
 					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9",
 					"desiredCapabilities": {
-						"tunnel-identifier" : "sportbets"
+						"tunnel-identifier" : "sportbets-${TRAVIS_BUILD_ID}"
 					  }
 				}
 			}
