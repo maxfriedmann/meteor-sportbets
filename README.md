@@ -19,5 +19,11 @@ Easy, heh?
 * AngularJS Documentation : https://docs.angularjs.org
 * Live Version : http://sportbets.meteor.com
 
+# Testing
+
+See https://travis-ci.org/maxfriedmann/meteor-sportbets
+
+[![Build Status](https://travis-ci.org/maxfriedmann/meteor-sportbets.svg?branch=develop)](https://travis-ci.org/maxfriedmann/meteor-sportbets)
+
 # Issues to solve
 If you want to contribute, please fork the project and do your changes. Afterwards send a pull request!
