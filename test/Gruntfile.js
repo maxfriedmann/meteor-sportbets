@@ -40,7 +40,12 @@ module.exports = function(grunt)
 			},
 			server: {}
 		},
-		
+		 waitServer: {
+		    options: {
+		      url: 'http://localhost:3000',
+		      timeout: 180 * 1000
+		    }
+		  },
 		nightwatch : {
 			options : {
 				standalone : true,
@@ -81,8 +86,9 @@ module.exports = function(grunt)
 	grunt.loadNpmTasks('grunt-shell-spawn');
 	grunt.loadNpmTasks('grunt-sauce-tunnel');
 	grunt.loadNpmTasks('grunt-mkdir');
+	grunt.loadNpmTasks('grunt-wait-server');
 	
 	grunt.registerTask('test', [ 'shell:meteor_start', 'nightwatch' ]);
 	grunt.registerTask('sauce', [ 'mkdir:all', 'nightwatch:saucelabs' ]);
-	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'sauce_tunnel', 'nightwatch:saucelabs_connect','sauce_tunnel_stop' ]);
+	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'nightwatch:saucelabs_connect','sauce_tunnel_stop' ]);
 };
