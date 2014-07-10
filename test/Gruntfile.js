@@ -1,5 +1,27 @@
+var request = require('request');
+
+
+
 module.exports = function(grunt)
 {
+	var tunnelId = process.env.TRAVIS_BUILD_ID == undefined ? "local" : process.env.TRAVIS_BUILD_ID;
+	
+	var saucelabsConfig = function(suites)
+	{
+		return {
+			"standalone" : false,
+			"src_folders" : suites,
+			"launchUrl" : "http://localhost:3000",
+			"selenium_host" : "localhost",
+			"selenium_port" : "4445",
+			"username" : "maxfriedmann",
+			"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9",
+			"desiredCapabilities" : {
+				"tunnel-identifier" : 'sportbets-' + tunnelId
+			}
+		};
+	};
+	
 	grunt.initConfig({
 		shell : {
 			meteor_start : {
@@ -23,61 +45,41 @@ module.exports = function(grunt)
 				},
 			},
 		},
-		sauce_tunnel: {
-			options: {
-				username: 'maxfriedmann',
-				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
-				identifier: 'sportbets-' + process.env.TRAVIS_BUILD_ID,
-				tunnelTimeout: 120 // whatever timeout you want to use
+		sauce_tunnel : {
+			options : {
+				username : 'maxfriedmann',
+				key : '9f608584-3969-4639-b95e-b4f3efbec2d9',
+				identifier : 'sportbets-' + tunnelId,
+				tunnelTimeout : 120
 			},
-			server: {}
+			server : {}
 		},
-		sauce_tunnel_stop: {
-		    	options: {
-				username: 'maxfriedmann',
-				key: '9f608584-3969-4639-b95e-b4f3efbec2d9',
-				identifier: 'sportbets-' + process.env.TRAVIS_BUILD_ID
+		sauce_tunnel_stop : {
+			options : {
+				username : 'maxfriedmann',
+				key : '9f608584-3969-4639-b95e-b4f3efbec2d9',
+				identifier : 'sportbets-' + tunnelId
 			},
-			server: {}
+			server : {}
 		},
-		 waitServer: {
-		    options: {
-		      url: 'http://localhost:3000',
-		      timeout: 180 * 1000
-		    }
-		  },
+		waitServer : {
+			options : {
+				url : 'http://localhost:3000',
+				timeout : 600 * 1000
+			}
+		},
 		nightwatch : {
 			options : {
 				standalone : true,
 				settings : {
-					"src_folders" : [ "selenium-tests/tests" ],
 					"output_folder" : "tests-reports"
 				},
 				test_settings : {
 					"launchUrl" : "http://localhost:3000"
 				},
-				live : {
-					"launchUrl" : "http://sportbets-test.meteor.com"
-				},
-				"saucelabs" : {
-					"standalone" : false,
-					"launchUrl" : "http://localhost:3000",
-					"selenium_host" : "ondemand.saucelabs.com",
-					"selenium_port" : 80,
-					"username" : "maxfriedmann",
-					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9"
-				},
-				"saucelabs_connect" : {
-					"standalone" : false,
-					"launchUrl" : "http://localhost:3000",
-					"selenium_host" : "localhost",
-					"selenium_port" : "4445",
-					"username" : "maxfriedmann",
-					"access_key" : "9f608584-3969-4639-b95e-b4f3efbec2d9",
-					"desiredCapabilities": {
-						"tunnel-identifier" : 'sportbets-' + process.env.TRAVIS_BUILD_ID
-					  }
-				}
+				"saucelabs_smoke" : saucelabsConfig([ "selenium-tests/tests/smoke" ]),
+				"saucelabs_integration" : saucelabsConfig([ "selenium-tests/tests/integration" ]),
+				"saucelabs_ui" : saucelabsConfig([ "selenium-tests/tests/ui" ]),
 			}
 		}
 	});
@@ -88,7 +90,6 @@ module.exports = function(grunt)
 	grunt.loadNpmTasks('grunt-mkdir');
 	grunt.loadNpmTasks('grunt-wait-server');
 	
-	grunt.registerTask('test', [ 'shell:meteor_start', 'nightwatch' ]);
-	grunt.registerTask('sauce', [ 'mkdir:all', 'nightwatch:saucelabs' ]);
-	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'nightwatch:saucelabs_connect','sauce_tunnel_stop' ]);
+	grunt.registerTask('saucelabs', [ 'nightwatch:saucelabs_smoke', 'nightwatch:saucelabs_integration', 'nightwatch:saucelabs_ui' ]);
+	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'saucelabs', 'sauce_tunnel_stop' ]);
 };

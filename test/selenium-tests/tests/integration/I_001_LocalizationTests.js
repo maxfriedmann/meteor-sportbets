@@ -1,4 +1,4 @@
-var TestSetup = require('../TestSetup');
+var TestSetup = require('../../TestSetup');
 
 module.exports = {
 	"LocalisationTests" : function(browser) {
