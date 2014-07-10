@@ -20,7 +20,7 @@
 					<fail message="No source parameter given" />
 				</then>
 			</if>
-			
+
 			<getMongoStuff url="${source}" />
 
 			<mkdir dir="backups" />
@@ -105,11 +105,20 @@
 			</then>
 		</if>
 
-		<exec executable="cmd.exe" failonerror="false">
-			<arg value="/c" />
-			<arg value="meteor deploy ${destination} --delete" />
-		</exec>
+		<input message="Do you really want to delete ${destination} (y/n)?" validargs="y,n" addproperty="do.delete" />
 
+		<if>
+			<equals arg1="y" arg2="${do.delete}" />
+			<then>
+				<exec executable="cmd.exe" failonerror="false">
+					<arg value="/c" />
+					<arg value="meteor deploy ${destination} --delete" />
+				</exec>
+			</then>
+			<else>
+				<fail message="Aborting..." />
+			</else>
+		</if>
 	</target>
 
 	<target name="completeRestoreFromSourceToDestination" depends="clean,deploy,backup,restore" />
