@@ -1,6 +1,5 @@
 var request = require('request');
-
-
+var TestSetup = require('./selenium-tests/globals/TestSetup.js');
 
 module.exports = function(grunt)
 {
@@ -41,7 +40,7 @@ module.exports = function(grunt)
 			all : {
 				options : {
 					mode : 0700,
-					create : [ 'tests-reports' ]
+					create : [ TestSetup.testReportsDirectory ]
 				},
 			},
 		},
@@ -72,10 +71,12 @@ module.exports = function(grunt)
 			options : {
 				standalone : true,
 				settings : {
-					"output_folder" : "tests-reports"
+					"output_folder" : TestSetup.testReportsDirectory
 				},
 				test_settings : {
-					"launchUrl" : "http://localhost:3000"
+					"launchUrl" : "http://localhost:3000",
+					"custom_commands_path" : "selenium-tests/commands",
+					"globals_path" : "selenium-tests/globals"
 				},
 				"saucelabs_smoke" : saucelabsConfig([ "selenium-tests/tests/smoke" ]),
 				"saucelabs_integration" : saucelabsConfig([ "selenium-tests/tests/integration" ]),
@@ -90,6 +91,5 @@ module.exports = function(grunt)
 	grunt.loadNpmTasks('grunt-mkdir');
 	grunt.loadNpmTasks('grunt-wait-server');
 	
-	grunt.registerTask('saucelabs', [ 'nightwatch:saucelabs_smoke', 'nightwatch:saucelabs_integration', 'nightwatch:saucelabs_ui' ]);
-	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'saucelabs', 'sauce_tunnel_stop' ]);
+	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'nightwatch:saucelabs_smoke', 'nightwatch:saucelabs_integration', 'sauce_tunnel_stop' ]);
 };

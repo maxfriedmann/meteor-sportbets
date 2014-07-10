@@ -1,12 +1,9 @@
-var TestSetup = require('../../TestSetup');
-
 module.exports = {
-	setUp : function(browser) {
-		TestSetup.createTestData(browser);
-		TestSetup.loginTestUser(browser);
-	},
 	"Placing Bets" : function(browser) {
-		browser.url(browser.launch_url + "/competitions/testleague")
+		browser
+		.createTestData()
+		.loginTestUser()
+		.url(browser.launch_url + "/competitions/testleague")
 		.waitForElementVisible("body", 10000)
 		.waitForElementVisible(".col-md-12.hidden-xs.matchdataRow",10000)
 		.isVisible(".lock.icon.ng-scope")
