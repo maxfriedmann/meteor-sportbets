@@ -76,6 +76,7 @@ module.exports = function(grunt)
 				test_settings : {
 					"launchUrl" : "http://localhost:3000",
 					"custom_commands_path" : "selenium-tests/commands",
+					"src_folders" : ["selenium-tests/tests"],
 					"globals_path" : "selenium-tests/globals"
 				},
 				"saucelabs_smoke" : saucelabsConfig([ "selenium-tests/tests/smoke" ]),
