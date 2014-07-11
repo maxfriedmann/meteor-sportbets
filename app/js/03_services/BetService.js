@@ -62,7 +62,7 @@ BetService.getPointsPerPlayerAndCompetition = function(playerId, competitionId)
 
 BetService.getPoints = function(bet, matchdata)
 {
-	if (matchdata)
+	if (matchdata && bet)
 	{
 		if (matchdata.multiplier == undefined)
 		{
