@@ -4,3 +4,4 @@ test/selenium-debug.log
 app/settings.deployment.json
 app/settings.local.json
 app/settings.test.json
+test/coverage.html

@@ -76,12 +76,20 @@ module.exports = function(grunt)
 				test_settings : {
 					"launchUrl" : "http://localhost:3000",
 					"custom_commands_path" : "selenium-tests/commands",
-					"src_folders" : ["selenium-tests/tests"],
+					"src_folders" : [ "selenium-tests/tests" ],
 					"globals_path" : "selenium-tests/globals"
 				},
 				"saucelabs_smoke" : saucelabsConfig([ "selenium-tests/tests/smoke" ]),
 				"saucelabs_integration" : saucelabsConfig([ "selenium-tests/tests/integration" ]),
 				"saucelabs_ui" : saucelabsConfig([ "selenium-tests/tests/ui" ]),
+			}
+		},
+		mochaTest : {
+			test : {
+				options : {
+					reporter : 'spec'
+				},
+				src : [ 'mocha/**/*.js' ]
 			}
 		}
 	});
@@ -91,6 +99,7 @@ module.exports = function(grunt)
 	grunt.loadNpmTasks('grunt-sauce-tunnel');
 	grunt.loadNpmTasks('grunt-mkdir');
 	grunt.loadNpmTasks('grunt-wait-server');
+	grunt.loadNpmTasks('grunt-mocha-test');
 	
 	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'nightwatch:saucelabs_smoke', 'nightwatch:saucelabs_integration', 'sauce_tunnel_stop' ]);
 };
