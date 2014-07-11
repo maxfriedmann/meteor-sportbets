@@ -1,5 +1,5 @@
 module.exports = {
-	"LocalisationTests" : function(browser) {
+	"LocalizationTests" : function(browser) {
 		browser
 		.url(browser.launch_url + "/competitions")
 		.waitForElementVisible('body', 60000)
