@@ -101,5 +101,5 @@ module.exports = function(grunt)
 	grunt.loadNpmTasks('grunt-wait-server');
 	grunt.loadNpmTasks('grunt-mocha-test');
 	
-	grunt.registerTask('travis', [ 'mkdir:all', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'nightwatch:saucelabs_smoke', 'nightwatch:saucelabs_integration', 'sauce_tunnel_stop' ]);
+	grunt.registerTask('travis', [ 'mkdir:all', 'mochaTest', 'shell:meteor_start', 'waitServer', 'sauce_tunnel', 'nightwatch:saucelabs_smoke', 'nightwatch:saucelabs_integration', 'sauce_tunnel_stop' ]);
 };
