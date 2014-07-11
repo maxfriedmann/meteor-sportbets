@@ -7,6 +7,7 @@ exports.command = function()
 	.setValue("#login-password", "testtest")
 	.click("#login-buttons-password")
 	.waitForElementVisible('#login-dropdown-list>a',10000)
+	.waitForElementPresent('.loggedInActions',10000)
 	.assert.containsText('#login-dropdown-list>a', 'test@test.com');
 	
 	return this;

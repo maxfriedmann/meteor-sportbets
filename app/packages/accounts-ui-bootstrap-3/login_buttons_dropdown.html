@@ -22,6 +22,7 @@
 </template>
 
 <template name="_loginButtonsLoggedInDropdownActions">
+	<div class="loggedInActions">
   {{#if additionalLoggedInDropdownActions}}
     {{> _loginButtonsAdditionalLoggedInDropdownActions}}
   {{/if}}
@@ -34,6 +35,7 @@
   {{/if}}
 
   <button class="btn btn-block btn-primary" id="login-buttons-logout">Sign out</button>
+  </div>
 </template>
 
 <!--            -->
