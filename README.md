@@ -20,7 +20,10 @@ See http://sportbets.meteor.com
 # Testing
 See https://travis-ci.org/maxfriedmann/meteor-sportbets
 
-[![Build Status](https://travis-ci.org/maxfriedmann/meteor-sportbets.svg?branch=develop)](https://travis-ci.org/maxfriedmann/meteor-sportbets)
+Branch | Status
+------------ | -------------
+Master | [![Build Status](https://travis-ci.org/maxfriedmann/meteor-sportbets.svg?branch=master)](https://travis-ci.org/maxfriedmann/meteor-sportbets)
+Develop | [![Build Status](https://travis-ci.org/maxfriedmann/meteor-sportbets.svg?branch=develop)](https://travis-ci.org/maxfriedmann/meteor-sportbets)
 
 # Issues and new Features
 Please have a look at : https://github.com/maxfriedmann/meteor-sportbets/issues
