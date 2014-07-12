@@ -67,6 +67,28 @@ RankingService.rankingForCompetition = function(competitionId, betGroupId)
 		}
 	});
 	
+	// iterate over all competition questions
+	CompetitionQuestions.find({
+		"competitionId" : competitionId
+	}).forEach(function(question)
+	{
+		// iterate over all specialbets for this competition
+		SpecialBets.find({
+			"questionId" : question._id
+		}).forEach(function(specialbet)
+		{
+			if (betGroup == undefined || (betGroup != undefined && _.contains(betGroup.players, specialbet.owner)))
+			{
+				if (ranking[specialbet.owner] == undefined)
+				{
+					ranking[specialbet.owner] = 0;
+				}
+				if (specialbet.points != undefined)
+					ranking[specialbet.owner] += parseInt(specialbet.points);
+			}
+		});
+	});
+	
 	// mix ranking and user
 	var rankingWithUsers = [];
 	for ( var userId in ranking)

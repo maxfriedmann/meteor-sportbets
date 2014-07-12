@@ -48,6 +48,16 @@
 
 					<i ng-show="competitionQuestion.duedate != undefined">This special bet can be changed until : {{competitionQuestion.duedate | date : "EEEE, MMMM d, y, HH:mm"}}</i>
 
+					<div ng-if="isAdministrator">
+						<br />
+						<div class="col-xs-12" ng-if="competitionQuestion.type == 'competitionTeams'">
+							Answer the question : <select ng-model="questionAnswers[competitionQuestion._id]" ng-options="competitionTeam.id as competitionTeam.name for competitionTeam in teamsForCompetition | orderBy:'name'"></select>
+						</div>
+						<div class="col-xs-12" ng-if="competitionQuestion.type == 'integer'">
+							Answer the question : <input type="number" ng-model="questionAnswers[competitionQuestion._id]">
+						</div>
+						<button class="btn btn-danger" ng-click="saveQuestionAnswer(competitionQuestion)">Save answer</button>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -4,6 +4,7 @@ app.controller("SpecialBetsController", [ "$scope", "autorun", "$routeParams", f
 	
 	$scope.newQuestion = {};
 	$scope.answers = [];
+	$scope.questionAnswers = [];
 	
 	// subscriptions
 	if ($routeParams.competitionName != undefined)
@@ -17,6 +18,19 @@ app.controller("SpecialBetsController", [ "$scope", "autorun", "$routeParams", f
 		if (isAdministrator() && $scope.competition)
 		{
 			Meteor.call("addNewCompetitionQuestion", $scope.competition._id, $scope.newQuestion.title, $scope.newQuestion.answerType, $scope.newQuestion.answerPoints, $scope.newQuestion.duedate, StandardCallback);
+		}
+	};
+	
+	$scope.saveQuestionAnswer = function(question)
+	{
+		if (isAdministrator())
+		{
+			if (!$scope.questionAnswers[question._id])
+				Log.popup.error("Please answer the question first!");
+			else
+			{
+				Meteor.call("saveSpecialBetAnswer", question._id, parseInt($scope.questionAnswers[question._id]), StandardCallback);
+			}
 		}
 	};
 	
@@ -53,6 +67,8 @@ app.controller("SpecialBetsController", [ "$scope", "autorun", "$routeParams", f
 			_.each($scope.competitionQuestions, function(question)
 			{
 				$scope.answers[question._id] = {};
+				if (isAdministrator)
+					$scope.questionAnswers[question._id] = question.answer;
 			});
 			
 			// get the answers
