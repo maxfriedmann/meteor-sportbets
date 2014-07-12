@@ -1,5 +1,5 @@
 .sportbets-top-logo {
-	background-image: url(/images/logo.jpg);
+	background-image: url(/images/logo.png);
 	background-size: 91px 50px;
 	display: table-cell;
 	height: 50px;
@@ -8,7 +8,7 @@
 }
 
 .sportbets-top {
-	background-color : #428bca;
+	background-image: url(/images/top_background.jpg);
 	height: 40px;
 	width: 100%;
 	position: relative;
