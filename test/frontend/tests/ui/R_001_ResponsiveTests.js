@@ -11,5 +11,7 @@ module.exports = {
 		.resizeWindow(1700, 1000)
 		.saveScreenshot(browser.globals.testReportsDirectory + "/view_4_large.png")
 		.end();
+		
+		console.log(browser.globals);
 	}
 };

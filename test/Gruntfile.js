@@ -1,9 +1,10 @@
 var request = require('request');
-var TestSetup = require('./selenium-tests/globals/TestSetup.js');
 
 module.exports = function(grunt)
 {
 	var tunnelId = process.env.TRAVIS_BUILD_ID == undefined ? "local" : process.env.TRAVIS_BUILD_ID;
+	
+	var TestSetup = grunt.file.readJSON('./globals/TestSetup.json');
 	
 	var saucelabsConfig = function(suites)
 	{
@@ -75,13 +76,24 @@ module.exports = function(grunt)
 				},
 				test_settings : {
 					"launchUrl" : "http://localhost:3000",
-					"custom_commands_path" : "selenium-tests/commands",
-					"src_folders" : [ "selenium-tests/tests" ],
-					"globals_path" : "selenium-tests/globals"
+					"custom_commands_path" : "frontend/commands",
+					"src_folders" : [ "frontend/tests" ],
+					"globals" : {
+						"testReportsDirectory" : TestSetup.testReportsDirectory
+					}
 				},
-				"saucelabs_smoke" : saucelabsConfig([ "selenium-tests/tests/smoke" ]),
-				"saucelabs_integration" : saucelabsConfig([ "selenium-tests/tests/integration" ]),
-				"saucelabs_ui" : saucelabsConfig([ "selenium-tests/tests/ui" ]),
+				"integration" : {
+					"src_folders" : [ "frontend/tests/integration" ]
+				},
+				"smoke" : {
+					"src_folders" : [ "frontend/tests/smoke" ]
+				},
+				"ui" : {
+					"src_folders" : [ "frontend/tests/ui" ]
+				},
+				"saucelabs_smoke" : saucelabsConfig([ "frontend/tests/smoke" ]),
+				"saucelabs_integration" : saucelabsConfig([ "frontend/tests/integration" ]),
+				"saucelabs_ui" : saucelabsConfig([ "frontend/tests/ui" ]),
 			}
 		},
 		mochaTest : {
@@ -89,7 +101,7 @@ module.exports = function(grunt)
 				options : {
 					reporter : 'spec'
 				},
-				src : [ 'mocha/**/*.js' ]
+				src : [ 'unit/**/*.js' ]
 			}
 		}
 	});
