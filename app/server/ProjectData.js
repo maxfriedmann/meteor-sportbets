@@ -63,4 +63,10 @@ Meteor.startup(function()
 		shortcut : "cl",
 		saison : 2013
 	});
+
+	leagueImport("pl2014", {
+		id : 744,
+		shortcut : "PL",
+		saison : 2014
+	});
 });
