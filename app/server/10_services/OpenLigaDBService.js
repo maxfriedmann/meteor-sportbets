@@ -12,6 +12,13 @@ OpenLigaDBService.updateCompetition = function(competitionId)
 		console.log("##########################################################");
 		console.log("## Updating Competition : " + competition.name);
 		console.log("##########################################################");
+        
+        // check for resultTypeId
+        if (competition.openligadb.resultTypeId == undefined)
+        {
+            console.log("To be able to update results via the OpenLigaDBService you have to provide a 'resultTypeId' in the OpenLigaDB configuration!");
+            return false;
+        }
 		
 		// Check last change date from OpenLigaDB
 		var lastChangeDateResponse = HTTP.call("GET", "http://openligadb-json.heroku.com/api/last_change_date_by_league_saison ", {
@@ -122,15 +129,12 @@ OpenLigaDBService.updateCompetition = function(competitionId)
 						// check for results in result array
 						if (match.match_results != undefined && match.match_results.match_result != undefined && match.match_results.match_result instanceof Array)
 						{
-							var rightResult = match.match_results.match_result.length;
-							
 							for (var r = 0; r < match.match_results.match_result.length; r++)
 							{
-								if (match.match_results.match_result[r].result_order_id == rightResult)
+                                if (match.match_results.match_result[r].resultTypeId == competition.openligadb.resultTypeId)
 								{
 									match.points_team1 = match.match_results.match_result[r].points_team1;
 									match.points_team2 = match.match_results.match_result[r].points_team2;
-									break;
 								}
 							}
 						}
