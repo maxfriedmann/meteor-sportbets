@@ -43,6 +43,15 @@ Meteor.startup(function () {
         resultTypeId: 2
     });
 
+    // PREMIER LEAGUE
+    leagueImport("pl2014", {
+        id: 744,
+        shortcut: "PL",
+        saison: 2014,
+        resultTypeId: 2
+    });
+
+
     // CHAMPIONS LEAGUE
     leagueImport("cl2013", {
         id: 651,
