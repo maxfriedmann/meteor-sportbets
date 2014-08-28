@@ -6,7 +6,7 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.3.3",
     "grunt-contrib-uglify": "~0.4.0",
-    "grunt-nightwatch": "0.2.2",
+    "grunt-nightwatch": "0.2.4",
     "grunt-cli": "0.1.13",
     "grunt-shell-spawn": "0.3.0",
     "grunt-mkdir": "0.1.1",
