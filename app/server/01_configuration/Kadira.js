@@ -1,27 +1,23 @@
-Meteor.startup(function()
-{
+Meteor.startup(function () {
 	try
 	{
 		// local settings
 		var id = "";
 		var secret = "";
-		
-		if (Meteor.settings && Meteor.settings.kadira)
-		{
+
+		if (Meteor.settings && Meteor.settings.kadira) {
 			console.log("Using Production Kadira Settings...");
-			
+
 			id = Meteor.settings.kadira.appId;
 			appSecret = Meteor.settings.kadira.secret;
+			Kadira.connect(id, secret);
 		}
-		else
-		{
-			console.log("Using Local Kadira Settings...");
+		else {
+			console.warn("Kadira is not configured!");
 		}
-		
-		Kadira.connect(id, secret);
+
 	}
-	catch (ex)
-	{
+	catch (ex) {
 		console.log(ex);
 	}
 });

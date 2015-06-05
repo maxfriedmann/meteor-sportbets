@@ -3,13 +3,9 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-semantic-ui
-connection-banner
-nprogress
-auto-nprogress
-bootstrap-alerts
-#bootstrap
-bootstrap-3
+
+# system
+settinghead:auto-nprogress
 standard-app-packages
 accounts-base
 accounts-facebook
@@ -17,15 +13,29 @@ accounts-twitter
 accounts-google
 accounts-merge
 accounts-password
-accounts-ui-bootstrap-3
+ian:accounts-ui-bootstrap-3
+meteorhacks:subs-manager
+
+
+
+
+# UI packages
+twbs:bootstrap
+semantic:ui
+bootstrap-alerts
+
+# other
+natestrauser:connection-banner
+
+
 #accounts-ui
 jquery
 random
 font-awesome
 profile-online
 http
-less
-just-i18n
+less 
+anti:i18n
 kadira
 ganalytics
 accounts-github
@@ -33,4 +43,3 @@ email
 #appcache
 latency
 synced-cron
-subs-manager
