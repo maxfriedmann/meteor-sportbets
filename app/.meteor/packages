@@ -22,6 +22,7 @@ meteorhacks:subs-manager
 # UI packages
 twbs:bootstrap
 semantic:ui
+semantic:ui-css
 bootstrap-alerts
 
 # other

@@ -33,4 +33,9 @@ app.controller("CompetitionsController", [ "$scope", "$location", "autorun", fun
 		}
 	});
 	
+	$scope.createCompetition = function ()
+	{
+		$location.path("createCompetition");
+	}
+	
 } ]);

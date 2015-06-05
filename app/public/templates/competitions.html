@@ -2,6 +2,14 @@
 
 <div class="sportbets-mainarea">
 	<h2>{{i18n("competition.title")}}</h2>
+	
+	
+	<div class="pull-right">
+		<div class="ui compact labeled mini icon button" ng-click="createCompetition()">
+		  <i class="add icon"></i>
+		  {{i18n("competition.createCompetition")}}
+		</div>
+	</div>
 
 	<div class="row" ng-repeat="competition in competitions" align="center">
 		<div class="col-md-2 hidden-xs">

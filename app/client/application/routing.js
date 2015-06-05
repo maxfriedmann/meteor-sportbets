@@ -11,6 +11,11 @@ app.config([ '$routeProvider', function($routeProvider)
 		templateUrl : '/templates/competitions.html',
 		controller : 'CompetitionsController'
 	});
+
+	$routeProvider.when("/createCompetition", {
+		templateUrl : '/templates/createCompetition.html',
+		controller : 'CreateCompetitionController'
+	});
 	
 	// COMPETITION matches
 	$routeProvider.when('/competitions/:competitionName', {

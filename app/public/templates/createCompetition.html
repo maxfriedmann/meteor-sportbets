@@ -1,0 +1,23 @@
+<breadcrumb></breadcrumb>
+<div class="sportbets-mainarea">
+	<h2>{{i18n("competition.createCompetition")}}</h2>
+	<form class="ui form">
+		<div class="field">
+			<label>{{i18n("common.id")}}</label>
+			<input type="text" name="id" placeholder="Competition ID" ng-model="newCompetition.id">
+		</div>
+		<div class="field">
+			<label>{{i18n("common.name")}}</label>
+			<input type="text" name="name" placeholder="Competition Name" ng-model="newCompetition.name">
+		</div>
+		<div class="field">
+			<label>Competition Type</label>
+			<select class="ui dropdown" ng-model="newCompetition.type">
+				<option value="openligadb">OpenLigaDB</option>
+				<option value="manualTournament">Tournament</option>
+				<option value="manualLeague">League</option>
+			</select>
+		</div>
+		<div class="ui submit button" ng-click="createCompetition()">{{i18n("common.create")}}</div>
+	</form>
+</div>
