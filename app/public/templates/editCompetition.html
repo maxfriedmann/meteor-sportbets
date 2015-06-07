@@ -24,6 +24,12 @@
 			  <label>Randomize Teams on Tournament Start</label>
 <!--			</div>-->
 		  </div>
+				<div class="field" ng-if="competition.type == 'manualLeague'">
+<!--			<div class="ui toggle checkbox">-->
+			  <input type="checkbox" name="returnRound" ng-model="competition.options.returnRound">
+			  <label>Hin- und Rückrunde</label>
+<!--			</div>-->
+		  </div>
 
 		<h2 class="ui dividing header">Team Configuration</h4>
 		<div ng-if="competition.type == 'manualLeague' || competition.type == 'manualTournament'">

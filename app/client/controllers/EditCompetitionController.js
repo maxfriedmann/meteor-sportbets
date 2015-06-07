@@ -25,9 +25,9 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 			if ($scope.competition.options.randomizeTeamNames === undefined)
 				$scope.competition.options.randomizeTeamNames = true;
 
-
 			$scope.loading = false;
-			$scope.$apply();
+			//$scope.$apply();
+			
 			$('.ui.checkbox').checkbox();
 		});
 	}
@@ -44,7 +44,7 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 	$scope.getWildcards = function()
 	{
 		if ($scope.competition.type === "manualLeague")
-			return competition.options.teamCount % 2;
+			return $scope.competition.options.teamCount % 2;
 		if ($scope.competition.type === "manualTournament")
 			return CompetitionUtils.getTournamentWildcardCount($scope.competition.options.teamCount);
 	}
