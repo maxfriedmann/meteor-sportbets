@@ -46,7 +46,7 @@ Meteor.methods({
 
 		if (!Match.test(type, String))
 			throw new Meteor.Error("Competition Type must be set!");
-		if (!_.contains(["openligadb", "manualTournament", "manualLeague"], type))
+		if (!_.contains(CompetitionTypes, type))
 			throw new Meteor.Error("Competition Type must be either openligadb, manualTournament or manualLeague!");
 
 
@@ -187,6 +187,73 @@ Meteor.methods({
 					});
 				}
 			}
+		} else if (competition.type === "manual1on1") {
+
+			var teams = _.range(0, competition.options.teamCount);
+
+
+			Competitions.update(competition._id, {
+				$push: {
+					groups: {
+						group_name: "Hinrunde",
+						group_id: 0,
+						group_order_id: 0,
+						multiplier: 1
+					}
+				}
+			});
+			if (competition.options.returnRound === true) {
+				Competitions.update(competition._id, {
+					$push: {
+						groups: {
+							group_name: "Rückrunde",
+							group_id: 1,
+							group_order_id: 1,
+							multiplier: 1
+						}
+					}
+				});
+			}
+
+			var orderIndex = 0;
+			var teamCombosPlayedAlready = [];
+
+			for (var teamA = 0; teamA < teams.length; teamA++) {
+				for (var teamB = 0; teamB < teams.length; teamB++) {
+
+					if (teamA === teamB || _.contains(teamCombosPlayedAlready, teamA + "_" + teamB))
+						continue;
+					
+
+					// create the match        
+					Matches.insert({
+						competitionId: competition._id,
+						group_name: "Hinrunde",
+						group_order_id: 0,
+						group_id: 0,
+						orderId: orderIndex,
+						name_team1: competition.options.teamNames[teamA],
+						name_team2: competition.options.teamNames[teamB],
+						match_is_finished: false
+					});
+
+					if (competition.options.returnRound === true) {
+						Matches.insert({
+							competitionId: competition._id,
+							group_name: "Rückrunde",
+							group_order_id: 1,
+							group_id: 1,
+							orderId: orderIndex,
+							name_team1: competition.options.teamNames[teamB],
+							name_team2: competition.options.teamNames[teamA],
+							match_is_finished: false
+						});
+					}
+					orderIndex++;
+					teamCombosPlayedAlready.push(teamA + "_" + teamB);
+					teamCombosPlayedAlready.push(teamB + "_" + teamA);
+				}
+			}
 		} else if (competition.type === "manualTournament") {
 			// take care of wildcard team
 			if (CompetitionUtils.getTournamentWildcardCount(competition.options.teamCount) !== 0)
@@ -199,13 +266,13 @@ Meteor.methods({
 
 			var leagueDaysInTotal = CompetitionUtils.getTournamentRounds(competition.options.teamCount);
 			var currentRoundGamesCount = teams.length / 2;
-			
+
 			console.log(teams);
 
 			for (var leagueDay = 0; leagueDay < leagueDaysInTotal; leagueDay++) {
 				var leagueDayName = CompetitionUtils.getTournamentRoundName(leagueDay, leagueDaysInTotal);
 				var orderId = 0;
-				
+
 				// create league days (competition groups)
 				Competitions.update(competition._id, {
 					$push: {
@@ -238,7 +305,7 @@ Meteor.methods({
 							competitionId: competition._id,
 							group_name: leagueDayName,
 							group_order_id: leagueDay,
-							orderId : orderId++,
+							orderId: orderId++,
 							group_id: leagueDay,
 							name_team1: competition.options.teamNames[teamA],
 							name_team2: competition.options.teamNames[teamB],
@@ -246,24 +313,22 @@ Meteor.methods({
 						});
 					}
 				}
-				
+
 				// other days can be prefilled with empty teams here (to be able to bet on them already and to see the tourmanemt tree)
-				else
-				{
-					for (var i = 0; i < currentRoundGamesCount; i++)
-					{
+				else {
+					for (var i = 0; i < currentRoundGamesCount; i++) {
 						// create the match
 						Matches.insert({
 							competitionId: competition._id,
 							group_name: leagueDayName,
 							group_order_id: leagueDay,
 							group_id: leagueDay,
-							orderId : orderId++,
+							orderId: orderId++,
 							match_is_finished: false
 						});
 					}
 				}
-						 
+
 				currentRoundGamesCount /= 2;
 			}
 		}

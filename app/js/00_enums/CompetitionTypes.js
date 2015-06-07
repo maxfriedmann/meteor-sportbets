@@ -1,0 +1,1 @@
+CompetitionTypes = ["openligadb", "manualTournament", "manualLeague", "manual1on1"];

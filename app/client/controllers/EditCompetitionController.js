@@ -47,6 +47,7 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 			return $scope.competition.options.teamCount % 2;
 		if ($scope.competition.type === "manualTournament")
 			return CompetitionUtils.getTournamentWildcardCount($scope.competition.options.teamCount);
+		return 0;
 	}
 
 	$scope.saveCompetition = function () {
