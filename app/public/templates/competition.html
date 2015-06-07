@@ -105,7 +105,7 @@
 								<img ng-if="bets[match._id].points > 0" src="/images/trophys/{{bets[match._id].points}}_{{match.multiplier}}.png" height="40px" title="{{bets[match._id].points}} Point(s)" /> <img ng-if="bets[match._id].points == undefined || bets[match._id].points == 0" src="/images/trophys/placeholder.png" height="40px" />
 							</div>
 							<div class="col-md-4" align="center">
-								<i class="link facebook icon" ng-click="postOnFacebook(competition,match,bets[match._id])" title="Share your bet on Facebook"></i> <i class="lock icon" ng-if="bets[match._id].locked || match.match_is_finished" title="Bet is locked"></i> <i class="unlock icon" ng-if="!bets[match._id].locked && !match.match_is_finished" title="Bet is unlocked"></i> <i class="pointer edit icon" ng-click="activateManualResult(match._id)" ng-if="isAdministrator"></i>
+								<i class="link facebook icon" ng-click="postOnFacebook(competition,match,bets[match._id])" title="Share your bet on Facebook"></i> <i class="lock icon" ng-if="bets[match._id].locked || match.match_is_finished" title="Bet is locked"></i> <i class="unlock icon" ng-if="!bets[match._id].locked && !match.match_is_finished" title="Bet is unlocked"></i> <i class="pointer edit icon" ng-click="activateManualResult(match._id)" ng-if="isAdministrator || competitionOwner"></i>
 							</div>
 						</div>
 					</div>
@@ -165,7 +165,45 @@
 
 		</div>
 	</div>
+
+
+	<div>
+		<h2>Tabelle</h2>
+		<table class="ui striped table">
+			<thead>
+				<tr>
+					<th>Position</th>
+					<th>Team</th>
+					<th class="center aligned">Spiele</th>
+					<th class="center aligned">Gewonnen</th>
+					<th class="center aligned">Unentschieden</th>
+					<th class="center aligned">Verloren</th>
+					<th class="center aligned">Tore</th>
+					<th class="center aligned">Torverhältnis</th>
+					<th class="center aligned">Punkte</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="(key,team) in teamTableEntries">
+					<th>{{team.position}}</th>
+					<td>{{team.name}}</td>
+					<th class="center aligned">{{team.games}}</th>
+					<th class="center aligned">{{team.won}}</th>
+					<th class="center aligned">{{team.drawn}}</th>
+					<th class="center aligned">{{team.lost}}</th>
+					<th class="center aligned">{{team.goalDifference[0]}} : {{team.goalDifference[1]}}</th>
+					<th class="center aligned">{{team.goalDifference[0] - team.goalDifference[1]}}</th>
+					<th class="center aligned">{{team.points}}</th>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+
 </div>
+
+
 
 <div align="center" ng-if="matches != undefined && matches.length == 0">No matches to display!</div>
 

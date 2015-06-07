@@ -1,15 +1,19 @@
 Meteor.methods({
 	updateMatchManually: function (matchId, homegoals, awaygoals) {
-		if (isAdministrator()) {
+		var match = Matches.findOne({
+			"_id": matchId
+		});
+
+		var competition = Competitions.findOne(match.competitionId);
+
+		if (isAdministrator() || this.userId === competition.owner) {
 			check(matchId, String);
 			check(homegoals, Number);
 			check(awaygoals, Number);
 
 			console.log("Manually Updating Match ID : " + matchId);
 
-			var match = Matches.findOne({
-				"_id": matchId
-			});
+
 
 			if (match && matchId) {
 				Matches.update(matchId, {
@@ -19,25 +23,24 @@ Meteor.methods({
 						match_is_finished: true
 					}
 				}, function (error, success) {
-						if (error) {
-							throw new Meteor.Error(501, "Could not update Bet manually!", error);
-						}
-					
-						// update points
-						BetService.updatePointsForMatch(Matches.findOne({
-							"_id": matchId
-						}));
-					
-						// update ranking
-						RankingService.updateRankings(match.competitionId);
-					
-						// update competition if needed
-						CompetitionService.updateManualTournament(match.competitionId);
-					});
-			}
-			else
+					if (error) {
+						throw new Meteor.Error(501, "Could not update Bet manually!", error);
+					}
+
+					// update points
+					BetService.updatePointsForMatch(Matches.findOne({
+						"_id": matchId
+					}));
+
+					// update ranking
+					RankingService.updateRankings(match.competitionId);
+
+					// update competition if needed
+					CompetitionService.updateManualTournament(match.competitionId);
+				});
+			} else
 				throw new Meteor.Error(501, "Could not find match with ID : " + matchId + "!");
-		}
-		return true;
+		} else throw new Meteor.Error(403, "You're not the owner of this competition!");
+
 	}
 });

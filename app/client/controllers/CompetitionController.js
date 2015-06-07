@@ -21,6 +21,8 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 		$scope.manualResults = [];
 		$scope.bets = [];
 		$scope.facebookSharingPossible = false;
+		$scope.teamTableEntries = {};
+		$scope.competitionOwner = false;
 
 		// subscriptions
 		if ($routeParams.competitionName != undefined) {
@@ -87,7 +89,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 						sort: {
 							match_date_time_utc: 1,
 							group_order_id: 1,
-							orderId : 1
+							orderId: 1
 						},
 						limit: limit
 					}).fetch();
@@ -98,7 +100,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 					}, {
 						sort: {
 							match_date_time_utc: 1,
-							orderId : 1
+							orderId: 1
 						}
 					}).count();
 
@@ -109,7 +111,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 					}, {
 						sort: {
 							match_date_time_utc: 1,
-							orderId : 1
+							orderId: 1
 						},
 						skip: skip,
 						limit: 15
@@ -121,7 +123,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 					}, {
 						sort: {
 							match_date_time_utc: 1,
-							orderId : 1
+							orderId: 1
 						},
 						limit: limit
 					}).fetch();
@@ -190,6 +192,80 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 			});
 		};
 
+
+		$scope.updateTable = function () {
+			$scope.teamTableEntries = {};
+			if ($scope.competition.type === "manual1on1" || $scope.competition.type === "manualLeague") {
+				for (var i = 0; i < $scope.matches.length; i++) {
+					var match = $scope.matches[i];
+					if ($scope.teamTableEntries[match.name_team1] === undefined) {
+						$scope.teamTableEntries[match.name_team1] = {
+							name: match.name_team1,
+							games: 0,
+							won: 0,
+							drawn: 0,
+							lost: 0,
+							goalDifference: [0, 0],
+							points: 0
+						}
+					}
+					if ($scope.teamTableEntries[match.name_team2] === undefined) {
+						$scope.teamTableEntries[match.name_team2] = {
+							name: match.name_team2,
+							games: 0,
+							won: 0,
+							drawn: 0,
+							lost: 0,
+							goalDifference: [0, 0],
+							points: 0
+						}
+					}
+
+					if (match.isFinished()) {
+						// games
+						$scope.teamTableEntries[match.name_team1].games++;
+						$scope.teamTableEntries[match.name_team2].games++;
+
+						// won/lost/drawn
+						if (match.points_team1 > match.points_team2) {
+							$scope.teamTableEntries[match.name_team1].won++;
+							$scope.teamTableEntries[match.name_team1].points += 3;
+							$scope.teamTableEntries[match.name_team2].lost++;
+						} else if (match.points_team1 < match.points_team2) {
+							$scope.teamTableEntries[match.name_team2].won++;
+							$scope.teamTableEntries[match.name_team2].points += 3;
+							$scope.teamTableEntries[match.name_team1].lost++;
+						} else if (match.points_team1 == match.points_team2) {
+							$scope.teamTableEntries[match.name_team1].drawn++;
+							$scope.teamTableEntries[match.name_team2].drawn++;
+							$scope.teamTableEntries[match.name_team1].points += 1;
+							$scope.teamTableEntries[match.name_team2].points += 1;
+						}
+
+						// goals
+						$scope.teamTableEntries[match.name_team1].goalDifference[0] += parseInt(match.points_team1);
+						$scope.teamTableEntries[match.name_team1].goalDifference[1] += parseInt(match.points_team2);
+
+						$scope.teamTableEntries[match.name_team2].goalDifference[0] += parseInt(match.points_team2);
+						$scope.teamTableEntries[match.name_team2].goalDifference[1] += parseInt(match.points_team1);
+					}
+				};
+
+				$scope.teamTableEntries = _.toArray($scope.teamTableEntries);
+
+				$scope.teamTableEntries = $scope.teamTableEntries.sort(function (entryA, entryB) {
+					if (entryA.points === entryB.points) {
+						var goalDifferenceA = entryA.goalDifference[0] - entryA.goalDifference[1];
+						var goalDifferenceB = entryB.goalDifference[0] - entryB.goalDifference[1];
+						return goalDifferenceA < goalDifferenceB;
+					}
+					return entryA.points < entryB.points;
+				});
+
+				console.log("$scope.teamTableEntries : ", $scope.teamTableEntries);
+			}
+		}
+
 		autorun($scope, function () {
 			// get competition
 			$scope.competition = Competitions.findOne({
@@ -197,6 +273,8 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 			});
 
 			if ($scope.competition != null) {
+				$scope.competitionOwner = Meteor.userId() !== null && Meteor.userId() === $scope.competition.owner;
+
 				GlobalSubsManager.subscribe("betsForCompetitionIdAndPlayerId", $scope.competition._id, Meteor.userId());
 				GlobalSubsManager.subscribe("matchesForCompetitionId", $scope.competition._id);
 
@@ -235,6 +313,10 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 					$scope.betGroup = undefined;
 				}
 
+
+				// get ranking
+				$scope.updateTable();
+
 				// get bets
 				Bets.find({
 					"competitionId": $scope.competition._id,
@@ -260,4 +342,4 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 			}
 		});
 
-}]);
+				}]);
