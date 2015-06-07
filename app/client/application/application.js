@@ -1,8 +1,8 @@
 app = angular.module("SportBets", [ 'ngRoute', 'restangular', 'ui.bootstrap', 'infinite-scroll' ]);
 
 // Global Objects
-GlobalSubsManager = new SubsManager({cacheLimit: 150, expireIn: 9999});
-OneTimeSubsManager = new SubsManager({cacheLimit: 20, expireIn: 5});
+GlobalSubsManager = new SubsManager();
+OneTimeSubsManager = GlobalSubsManager;
 
 app.config([ '$httpProvider', function($httpProvider)
 {

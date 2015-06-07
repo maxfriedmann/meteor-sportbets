@@ -1,0 +1,45 @@
+<breadcrumb></breadcrumb>
+<div class="sportbets-mainarea">
+	<h1 class="ui header">{{i18n("competition.updatecompetition")}}</h2>
+	<p>
+	<form class="ui form" ng-if="!loading">
+		<h2 class="ui dividing header">Competition Details</h4>
+		<div class="three fields">
+			<div class="field">
+				<label>{{i18n("common.id")}}</label>
+				<input type="text" name="id" placeholder="Competition ID" ng-model="competition.name" disabled>
+			</div>
+			<div class="field">
+				<label>{{i18n("common.name")}}</label>
+				<input type="text" name="name" placeholder="Competition Name" ng-model="competition.displayName">
+			</div>
+			<div class="field">
+				<label>{{i18n("competition.type")}}</label>
+				<input type="text" name="name" placeholder="Competition Name" ng-model="competition.type" disabled>
+			</div>
+		</div>
+		<div class="field">
+<!--			<div class="ui toggle checkbox">-->
+			  <input type="checkbox" name="randomizeTeamNames" ng-model="competition.options.randomizeTeamNames">
+			  <label>Randomize Teams on Tournament Start</label>
+<!--			</div>-->
+		  </div>
+
+		<h2 class="ui dividing header">Team Configuration</h4>
+		<div ng-if="competition.type == 'manualLeague' || competition.type == 'manualTournament'">
+
+			<div class="field">
+				<label>Number of Teams</label>
+				<select ng-model="competition.options.teamCount" ng-options="count for count in range(1, 32)"></select>
+				<div class="ui small yellow message" ng-if="getWildcards() != 0">The Competition will be created with {{getWildcards()}} wildcard(s)!</div>
+			</div>
+			<div class="ui grid">
+				<div class="four wide column" ng-repeat="index in range(1, competition.options.teamCount)">Team {{index}} Name :
+					<input type="text" ng-model="competition.options.teamNames[(index-1)]">
+				</div>
+			</div>
+		</div>
+		<div class="ui submit button" ng-click="saveCompetition()">{{i18n("common.save")}}</div> <div class="ui warning button" ng-click="openPath('/competitions/' + competition.name)">{{i18n("common.back")}}</div>
+	</form></p>
+	<div ng-if="loading">Loading...</div>
+</div>

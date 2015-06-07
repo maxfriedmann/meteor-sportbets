@@ -3,7 +3,7 @@ Meteor.methods({
 	{
 		if (Meteor.userId())
 		{
-			check(matchId, Number);
+			check(matchId, String);
 			check(deltaHomegoals, Number);
 			check(deltaAwaygoals, Number);
 			check(competitionId, String);
@@ -16,8 +16,10 @@ Meteor.methods({
 			
 			verifiedUserCheck();
 			
+			console.log("placing bet on matchid : " + matchId);
+			
 			var match = Matches.findOne({
-				"match_id" : String(matchId)
+				"_id" : matchId
 			});
 			
 			if (!match)

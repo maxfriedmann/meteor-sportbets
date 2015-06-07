@@ -17,3 +17,11 @@ Competition.prototype.getBetGroups = function()
 	}
 	return this.betGroups;
 };
+
+
+Competition.prototype.isStarted = function () {
+	if (this.started === undefined)
+		throw new Meteor.Error("Competition does not have the started flag!");
+	else
+		return this.started === true;
+};

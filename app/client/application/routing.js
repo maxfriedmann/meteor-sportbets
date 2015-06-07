@@ -52,6 +52,12 @@ app.config([ '$routeProvider', function($routeProvider)
 		controller : 'SpecialBetsController'
 	});
 	
+	// COMPETITION edit
+	$routeProvider.when('/competitions/:competitionName/edit', {
+		templateUrl : "/templates/editCompetition.html",
+		controller : 'EditCompetitionController'
+	});
+	
 	// DEVELOPER
 	$routeProvider.when('/developer/flags', {
 		templateUrl : "/templates/flags.html",

@@ -6,6 +6,7 @@ Meteor.startup(function () {
         }, {
             name: id,
             image: "/images/competitions/" + id + ".png",
+            started: true,
             openligadb: openligadb
         });
         console.log("Successfully updated league : " + id);

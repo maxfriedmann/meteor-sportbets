@@ -10,24 +10,26 @@ BetService.isBetable = function(bet)
 
 BetService.placeDeltaBet = function(matchId, competitionId, deltaHomeGoals, deltaAwayGoals, callback)
 {
-	Meteor.call("placeDeltaBet", parseInt(matchId), competitionId, parseInt(deltaHomeGoals), parseInt(deltaAwayGoals), callback);
+	Meteor.call("placeDeltaBet", matchId, competitionId, parseInt(deltaHomeGoals), parseInt(deltaAwayGoals), callback);
 };
 
 BetService.getBetForMatchdata = function(matchdata)
 {
-	return Bets.findOne({
-		"owner" : Meteor.userId(),
-		"matchId" : matchdata.match_id
-	});
+	// return Bets.findOne({
+	// 	"owner" : Meteor.userId(),
+	// 	"matchId" : matchdata.match_id
+	// });
+	throw new Meteor.Error("deprecated");
 };
 
 BetService.updatePointsForMatch = function(match)
 {
+
 	// update bet points
-	if (match.match_is_finished)
+	if (match.isFinished())
 	{
 		Bets.find({
-			"matchId" : parseInt(match.match_id)
+			"matchId" : match._id
 		}).forEach(function(bet)
 		{
 			var points = BetService.getPoints(bet, match);
@@ -62,6 +64,7 @@ BetService.getPointsPerPlayerAndCompetition = function(playerId, competitionId)
 
 BetService.getPoints = function(bet, matchdata)
 {
+	debugger;
 	if (matchdata && bet)
 	{
 		if (matchdata.multiplier == undefined)
