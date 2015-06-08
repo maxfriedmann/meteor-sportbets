@@ -268,8 +268,9 @@ Meteor.methods({
 			}
 		} else if (competition.type === "manualTournament") {
 			// take care of wildcard team
-			if (CompetitionUtils.getTournamentWildcardCount(competition.options.teamCount) !== 0)
-				competition.options.teamCount += CompetitionUtils.getTournamentWildcardCount(competition.options.teamCount);
+			var wildcardCount = CompetitionUtils.getTournamentWildcardCount(competition.options.teamCount);
+			if (wildcardCount !== 0)
+				competition.options.teamCount += wildcardCount;
 
 			var teams = _.range(0, competition.options.teamCount);
 
@@ -307,25 +308,49 @@ Meteor.methods({
 
 						// get 2 free teams
 						var teamA = _.find(teams, function (index) {
-							return !_.contains(teamsPlayed, index);
+							// return unplayed and non-wildcard player
+							return !_.contains(teamsPlayed, index) && competition.options.teamNames[index] !== undefined;
 						});
 						teamsPlayed.push(teamA);
 						var teamB = _.find(teams, function (index) {
+							// return wildcard if possible
+							if (teamsPlayed.length <= wildcardCount * 2)
+								return !_.contains(teamsPlayed, index) && competition.options.teamNames[index] === undefined;
 							return !_.contains(teamsPlayed, index);
 						});
 						teamsPlayed.push(teamB);
 
 						// create the match
-						Matches.insert({
-							competitionId: competition._id,
-							group_name: leagueDayName,
-							group_order_id: leagueDay,
-							orderId: orderId++,
-							group_id: leagueDay,
-							name_team1: competition.options.teamNames[teamA],
-							name_team2: competition.options.teamNames[teamB],
-							match_is_finished: false
-						});
+						if (competition.options.teamNames[teamA] === undefined || competition.options.teamNames[teamB] === undefined) {
+
+							var goalsA = competition.options.teamNames[teamA] === undefined ? 0 : 1;
+							var goalsB = competition.options.teamNames[teamB] === undefined ? 0 : 1;
+
+							// insert wildcard match
+							Matches.insert({
+								competitionId: competition._id,
+								group_name: leagueDayName,
+								group_order_id: leagueDay,
+								orderId: orderId++,
+								group_id: leagueDay,
+								name_team1: competition.options.teamNames[teamA],
+								name_team2: competition.options.teamNames[teamB],
+								points_team1: goalsA,
+								points_team2: goalsB,
+								match_is_finished: true
+							});
+						} else {
+							Matches.insert({
+								competitionId: competition._id,
+								group_name: leagueDayName,
+								group_order_id: leagueDay,
+								orderId: orderId++,
+								group_id: leagueDay,
+								name_team1: competition.options.teamNames[teamA],
+								name_team2: competition.options.teamNames[teamB],
+								match_is_finished: false
+							});
+						}
 					}
 				}
 
@@ -349,11 +374,14 @@ Meteor.methods({
 		}
 
 		// start competition
-		Competitions.update(competition.id, {
+		Competitions.update(competition._id, {
 			$set: {
 				"started": true
 			}
 		});
+		
+		// and an initial update
+		CompetitionService.updateManualTournament(competition._id)
 	},
 	restartManualCompetition: function (id) {
 		var competition = Competitions.findOne({

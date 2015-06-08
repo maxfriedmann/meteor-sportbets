@@ -26,7 +26,7 @@ CompetitionUtils.getTournamentRounds = function (playerCount) {
 	}
 	while (rounds < 25);
 
-	throw new Error("Could not determine tournament round count for player count " + playerCount);
+	throw new Meteor.Error("Could not determine tournament round count for player count " + playerCount);
 }
 
 CompetitionUtils.getTournamentRoundName = function (leagueDay, rounds) {
@@ -38,13 +38,15 @@ CompetitionUtils.getTournamentRoundName = function (leagueDay, rounds) {
 		return "Finale";
 	case 2:
 		return "Halbfinale";
-	case 3:
-		return "Viertelfinale";
 	case 4:
+		return "Viertelfinale";
+	case 8:
 		return "Achtelfinale";
+	case 16:
+		return "Sechzehntelfinale";
 	}
 
-	throw new Error("Could not determine tournament round name for day " + leagueDay + " and rounds " + rounds);
+	throw new Meteor.Error("Could not determine tournament round name for day " + leagueDay + " and rounds " + rounds + ", current : " + current);
 }
 
 CompetitionUtils.getTournamentRoundMatchesCount = function (leagueDay, rounds) {
@@ -60,7 +62,11 @@ CompetitionUtils.getTournamentRoundMatchesCount = function (leagueDay, rounds) {
 		return 4;
 	case 4:
 		return 8;
+	case 5:
+		return 16;
+	case 6:
+		return 32;
 	}
 
-	throw new Error("Could not determine tournament round name for day " + leagueDay + " and rounds " + rounds);
+	throw new Meteor.Error("Could not determine tournament round count for day " + leagueDay + " and rounds " + rounds + ", current : " + current);
 }

@@ -1,0 +1,55 @@
+div.jQBracket {
+	zoom: 1.5;
+	width: 100% !important;
+}
+
+div.jQBracket .team div.label {
+	color: black;
+	font-family: "Dosis";
+	padding: 0px;
+	padding-top: 7px;
+}
+/*
+div.jQBracket .np {
+	visibility: hidden;
+}
+*/
+
+div.jQBracket .connector {
+	border: 1px solid #666;
+	border-left-style: none;
+}
+
+div.jQBracket .connector div.connector {
+	border-bottom: 1px solid #666;
+}
+
+div.jQBracket .team {
+	background-color: #F7F7F7;
+	width: 150px;
+}
+
+div.jQBracket .round {
+	width: 150px;
+}
+
+div.jQBracket .bracket
+{
+	float: none;
+}
+
+div.jQBracket .team:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-top: 1px solid lightgray;
+	border-left: 1px solid lightgray;
+	border-right: 1px solid lightgray;
+}
+
+div.jQBracket .team:nth-child(2) {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: 1px solid lightgray;
+	border-left: 1px solid lightgray;
+	border-right: 1px solid lightgray;
+}

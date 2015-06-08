@@ -188,7 +188,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 
 		$scope.updateTable = function () {
 			$scope.teamTableEntries = {};
-			if ($scope.competition.type === "manual1on1" || $scope.competition.type === "manualLeague") {
+			if ($scope.competition.type === "manual1on1" || $scope.competition.type === "manualLeague" || $scope.competition.type === "manualTournament") {
 				for (var i = 0; i < $scope.matches.length; i++) {
 					var match = $scope.matches[i];
 					if ($scope.teamTableEntries[match.name_team1] === undefined) {
@@ -256,6 +256,46 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 				});
 
 				console.log("$scope.teamTableEntries : ", $scope.teamTableEntries);
+			}
+
+			if ($scope.competition.type == "manualTournament") {
+				var singleElimination = {
+					"teams": [],
+					"results": [[]]
+				};
+				_.each($scope.matches, function (match) {
+
+					// teams
+					if (match.group_order_id === 0) {
+						singleElimination.teams.push([match.getTeamNameA(), match.getTeamNameB()]);
+					}
+
+					// results
+					if (singleElimination.results[0] === undefined)
+						singleElimination.results[0] = [];
+					if (singleElimination.results[0][match.group_order_id] === undefined)
+						singleElimination.results[0][match.group_order_id] = [];
+
+					if (match.points_team1 == undefined || match.points_team2 == undefined)
+						singleElimination.results[0][match.group_order_id].push([null,null]);
+					else {
+
+						var pointsA = match.points_team1 == undefined ? undefined : match.points_team1;
+						var pointsB = match.points_team2 == undefined ? undefined : match.points_team2;
+
+						singleElimination.results[0][match.group_order_id].push([pointsA, pointsB]);
+					}
+
+				});
+
+				console.log(singleElimination);
+
+				$('#tournamentTree').bracket({
+					init: singleElimination,
+					skipConsolationRound: true
+				})
+
+
 			}
 		}
 

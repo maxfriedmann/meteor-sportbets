@@ -28,7 +28,7 @@
 			</div>
 
 
-			<div ng-if="competition.groups.length > 1" align="right" style="padding:5px">
+			<div ng-if="competition.groups.length > 1 && competition.type != 'manualTournament'" align="right" style="padding:5px">
 				<form class="form-horizontal" role="form">
 					<div class="form-group helptext-bottom" title="Filter all matches by groups/days/weekends/rounds" align="right">
 						<label class="col-sm-3 control-label" for="competitionGroupSelector">{{i18n("competition.filter")}}</label>
@@ -72,7 +72,7 @@
 							<div class="col-md-1">
 								<img src="{{match.getHomeFlag()}}" height="28px" />
 							</div>
-							<div class="col-md-3 team-name-label pointer" ng-click="openPath('/statistics/teams/' + match.id_team1 + '-' + match.name_team1)">{{match.getTeams()[0].getName()}}</div>
+							<div class="col-md-3 team-name-label pointer" ng-click="openPath('/statistics/teams/' + match.id_team1 + '-' + match.name_team1)">{{match.getTeamNameA()}}</div>
 
 							<!-- Results -->
 							<div class="col-md-3 match-result-label" align="center">
@@ -90,7 +90,7 @@
 
 
 
-							<div class="col-md-3 team-name-label pointer" align="right" ng-click="openPath('/statistics/teams/' + match.id_team2 + '-' + match.name_team2)">{{openligadbI18n(match.name_team2)}}</div>
+							<div class="col-md-3 team-name-label pointer" align="right" ng-click="openPath('/statistics/teams/' + match.id_team2 + '-' + match.name_team2)">{{openligadbI18n(match.getTeamNameB())}}</div>
 							<div class="col-md-1 " align="right">
 								<img src="{{match.getAwayFlag()}}" width="28px" />
 							</div>
@@ -179,12 +179,19 @@
 	</div>
 
 
-	<div>
-		<h2>Tabelle</h2>
+	<div ng-if="competition.type == 'manualTournament'">
+		<h2>Tournament Tree</h2>
+		<div id="tournamentTree">Tournament Tree Loading...</div>
+
+	</div>
+	<p>&nbsp;</p>
+	<div width="100%">
+		<h2 ng-if="competition.type != 'manualTournament'">Tabelle</h2>
+		<h2 ng-if="competition.type == 'manualTournament'">Statistik</h2>
 		<table class="ui striped table">
 			<thead>
 				<tr>
-					<th>Position</th>
+					<th ng-if="competition.type != 'manualTournament'">Position</th>
 					<th>Team</th>
 					<th class="center aligned">Spiele</th>
 					<th class="center aligned">Gewonnen</th>
@@ -192,20 +199,21 @@
 					<th class="center aligned">Verloren</th>
 					<th class="center aligned">Tore</th>
 					<th class="center aligned">Torverhältnis</th>
-					<th class="center aligned">Punkte</th>
+					<th class="center aligned" ng-if="competition.type != 'manualTournament'">Punkte</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="(key,team) in teamTableEntries">
-					<th>{{team.position}}</th>
-					<td>{{team.name}}</td>
+					<th ng-if="competition.type != 'manualTournament'">{{team.position}}</th>
+					<td ng-if="team.name != undefined">{{team.name}}</td>
+					<td ng-if="team.name == undefined">Wildcard Player</td>
 					<th class="center aligned">{{team.games}}</th>
 					<th class="center aligned">{{team.won}}</th>
 					<th class="center aligned">{{team.drawn}}</th>
 					<th class="center aligned">{{team.lost}}</th>
 					<th class="center aligned">{{team.goalDifference[0]}} : {{team.goalDifference[1]}}</th>
 					<th class="center aligned">{{team.goalDifference[0] - team.goalDifference[1]}}</th>
-					<th class="center aligned">{{team.points}}</th>
+					<th class="center aligned" ng-if="competition.type != 'manualTournament'">{{team.points}}</th>
 				</tr>
 			</tbody>
 		</table>
