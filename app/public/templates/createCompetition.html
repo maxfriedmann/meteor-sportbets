@@ -4,11 +4,11 @@
 	<form class="ui form">
 		<div class="field">
 			<label>{{i18n("common.id")}}</label>
-			<input type="text" name="id" placeholder="Competition ID" ng-model="newCompetition.id">
+			<input type="text" name="id" ng-model="newCompetition.id">
 		</div>
 		<div class="field">
 			<label>{{i18n("common.name")}}</label>
-			<input type="text" name="name" placeholder="Competition Name" ng-model="newCompetition.name">
+			<input type="text" name="name" ng-model="newCompetition.name">
 		</div>
 		<div class="field">
 			<label>Competition Type</label>
@@ -19,6 +19,6 @@
 				<option value="manual1on1">1on1</option>
 			</select>
 		</div>
-		<div class="ui submit button" ng-click="createCompetition()">{{i18n("common.create")}}</div>
+		<div class="ui submit green button" ng-click="createCompetition()">{{i18n("common.create")}}</div>
 	</form>
 </div>

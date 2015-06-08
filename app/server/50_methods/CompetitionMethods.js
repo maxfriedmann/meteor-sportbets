@@ -107,6 +107,14 @@ Meteor.methods({
 			throw new Meteor.Error("Could not find competition with id : " + id);
 		if (competition.owner !== this.userId)
 			throw new Meteor.Error("You are not the owner of this competition!");
+		if (competition.type === "openligadb")
+			throw new Meteor.Error("OpenLigaDB competitions are started by OpenLigaDB directly!");
+
+		if (competition.options === undefined)
+			throw new Meteor.Error("Please configure the competition first!");
+
+		if (!(competition.options.teamNames instanceof Array) || competition.options.teamNames.length === 0)
+			throw new Meteor.Error("Please add some teams to the competition first!");
 
 		// randomize teams?
 		if (competition.options.randomizeTeamNames === true) {

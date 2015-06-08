@@ -4,29 +4,31 @@
 
 	<div class="row">
 		<div class="col-xs-12 col-md-6 pull-right" align="right">
-			<button class="btn btn-primary" ng-click="openPath('/competitions/' + competition.name + '/ranking')">
+
+			<div class="ui small labeled blue icon button" ng-click="openPath('/competitions/' + competition.name + '/ranking')">
 				<i class="trophy icon"></i> {{i18n("competition.showranking")}}
-			</button>
-			<button class="btn btn-primary" ng-click="openPath('/competitions/' + competition.name + '/specialbets')">
+			</div>
+			<div class="ui small labeled blue icon button" ng-click="openPath('/competitions/' + competition.name + '/specialbets')">
 				<i class="empty star icon"></i> {{i18n("competition.specialbets")}}
-			</button>
-			<button class="btn btn-danger" ng-click="updateCompetition(competition)" ng-if="showUpdateButton">
+			</div>
+			<div class="ui small labeled green icon button" ng-click="updateCompetition(competition)" ng-if="showUpdateButton">
 				<i class="refresh icon"></i> {{i18n("competition.updatecompetition")}}
-			</button>
-			<button class="btn btn-danger" ng-click="updatePoints(competition)" ng-if="showUpdateButton">
+			</div>
+			<div class="ui small labeled green icon button" ng-click="updatePoints(competition)" ng-if="showUpdateButton">
 				<i class="refresh icon"></i> Update Points
-			</button>
-			<button class="btn btn-success" ng-click="startCompetition()" ng-if="showEditButton && !competition.started">
+			</div>
+			<div class="ui small labeled green icon button" ng-click="startCompetition()" ng-if="showEditButton && !competition.started && competition.type != 'openligadb'">
 				<i class="play icon"></i> Start Competition
-			</button>
-			<button class="btn btn-warning" ng-click="restartCompetition()" ng-if="showEditButton && competition.started">
+			</div>
+			<div class="ui small labeled red icon button" ng-click="restartCompetition()" ng-if="showEditButton && competition.started && competition.type != 'openligadb'">
 				<i class="retweet icon"></i> Restart Competition
-			</button>
-			<button class="btn btn-danger" ng-click="openPath('/competitions/' + competition.name + '/edit')" ng-if="showEditButton">
+			</div>
+			<div class="ui small labeled orange icon button" ng-click="openPath('/competitions/' + competition.name + '/edit')" ng-if="showEditButton">
 				<i class="edit icon"></i> Edit Competition
-			</button>
-			<hr />
-			<div ng-if="competition.groups.length > 1" align="right">
+			</div>
+
+
+			<div ng-if="competition.groups.length > 1" align="right" style="padding:5px">
 				<form class="form-horizontal" role="form">
 					<div class="form-group helptext-bottom" title="Filter all matches by groups/days/weekends/rounds" align="right">
 						<label class="col-sm-3 control-label" for="competitionGroupSelector">{{i18n("competition.filter")}}</label>
@@ -50,7 +52,7 @@
 		</div>
 	</div>
 
-	<div class="row no-select" ng-if="competition">
+	<div class="row no-select" ng-if="competition" style="padding-top:20px">
 
 		<div infinite-scroll="loadMore()" infinite-scroll-immediate-check="true">
 			<div ng-repeat="match in matches track by $index" ng-init="displayGroupNameState = displayGroupName(match.group_id)">
@@ -70,14 +72,24 @@
 							<div class="col-md-1">
 								<img src="{{match.getHomeFlag()}}" height="28px" />
 							</div>
-							<div class="col-md-3 team-name-label pointer" ng-click="openPath('/statistics/teams/' + match.id_team1 + '-' + match.name_team1)">{{openligadbI18n(match.name_team1)}}</div>
-							<div class="col-md-3 match-result-label" align="center" ng-if="match.match_is_finished">{{match.points_team1}} : {{match.points_team2}}</div>
-							<div style="position:absolute" class="col-md-3 match-result-label" align="center" ng-if="manualResultActivated && manualResults[match._id] != undefined">
-								<input type="text" ng-model="manualResults[match._id].home" size="2"> :
-								<input type="text" ng-model="manualResults[match._id].away" size="2">
-								<button ng-click="updateMatchManually(match._id)">OK</button>
+							<div class="col-md-3 team-name-label pointer" ng-click="openPath('/statistics/teams/' + match.id_team1 + '-' + match.name_team1)">{{match.getTeams()[0].getName()}}</div>
+
+							<!-- Results -->
+							<div class="col-md-3 match-result-label" align="center">
+								<div ng-click="enterManualResult(match._id)" ng-class="{'pointer' : competitionOwner}" ng-if="manualResultActivated != match._id">
+									<div ng-if="match.isFinished()">{{match.points_team1}} : {{match.points_team2}}</div>
+									<div ng-if="!match.isFinished()">- : -</div>
+								</div>
+
+								<div ng-if="manualResultActivated == match._id">
+									<input type="text" ng-model="manualResults[match._id].home" size="2"> :
+									<input type="text" ng-model="manualResults[match._id].away" size="2">
+									<button ng-click="updateMatchManually(match._id)">OK</button>
+								</div>
 							</div>
-							<div class="col-md-3 match-result-label" align="center" ng-if="!match.match_is_finished">- : -</div>
+
+
+
 							<div class="col-md-3 team-name-label pointer" align="right" ng-click="openPath('/statistics/teams/' + match.id_team2 + '-' + match.name_team2)">{{openligadbI18n(match.name_team2)}}</div>
 							<div class="col-md-1 " align="right">
 								<img src="{{match.getAwayFlag()}}" width="28px" />
@@ -105,7 +117,7 @@
 								<img ng-if="bets[match._id].points > 0" src="/images/trophys/{{bets[match._id].points}}_{{match.multiplier}}.png" height="40px" title="{{bets[match._id].points}} Point(s)" /> <img ng-if="bets[match._id].points == undefined || bets[match._id].points == 0" src="/images/trophys/placeholder.png" height="40px" />
 							</div>
 							<div class="col-md-4" align="center">
-								<i class="link facebook icon" ng-click="postOnFacebook(competition,match,bets[match._id])" title="Share your bet on Facebook"></i> <i class="lock icon" ng-if="bets[match._id].locked || match.match_is_finished" title="Bet is locked"></i> <i class="unlock icon" ng-if="!bets[match._id].locked && !match.match_is_finished" title="Bet is unlocked"></i> <i class="pointer edit icon" ng-click="activateManualResult(match._id)" ng-if="isAdministrator || competitionOwner"></i>
+								<i class="link facebook icon" ng-click="postOnFacebook(competition,match,bets[match._id])" title="Share your bet on Facebook"></i> <i class="lock icon" ng-if="bets[match._id].locked || match.isFinished()" title="Bet is locked"></i> <i class="unlock icon" ng-if="!bets[match._id].locked && !match.isFinished()" title="Bet is unlocked"></i>
 							</div>
 						</div>
 					</div>
@@ -121,7 +133,7 @@
 							<img src="{{match.getHomeFlag()}}" height="28px" /> {{openligadbI18n(match.name_team1)}}
 						</div>
 						<div class="col-xs-2">
-							<span ng-if="match.match_is_finished">{{match.points_team1}} : {{match.points_team2}}</span> <span ng-if="!match.match_is_finished">- : -</span>
+							<span ng-if="match.isFinished()">{{match.points_team1}} : {{match.points_team2}}</span> <span ng-if="!match.isFinished()">- : -</span>
 						</div>
 						<div class="col-xs-5 pointer" align="right" ng-click="openPath('/statistics/teams/' + match.id_team2 + '-' + match.name_team2)">
 							{{openligadbI18n(match.name_team2)}} <img src="{{match.getAwayFlag()}}" width="28px" />

@@ -1,5 +1,5 @@
 Meteor.methods({
-	updateMatchManually: function (matchId, homegoals, awaygoals) {
+	updateMatchManually: function (matchId, homegoalString, awaygoalString) {
 		var match = Matches.findOne({
 			"_id": matchId
 		});
@@ -8,8 +8,18 @@ Meteor.methods({
 
 		if (isAdministrator() || this.userId === competition.owner) {
 			check(matchId, String);
-			check(homegoals, Number);
-			check(awaygoals, Number);
+			check(homegoalString, String);
+			check(awaygoalString, String);
+
+			var homegoals = undefined;
+			var awaygoals = undefined;
+
+			try {
+				homegoals = parseInt(homegoalString);
+				awaygoals = parseInt(awaygoalString);
+			} catch (e) {
+				throw new Meteor.Error("Goals should be numbers!");
+			}
 
 			console.log("Manually Updating Match ID : " + matchId);
 
