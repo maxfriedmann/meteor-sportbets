@@ -14,10 +14,13 @@ accounts-google
 accounts-merge
 accounts-password
 ian:accounts-ui-bootstrap-3
+
+meteorhacks:kadira
+
+# Collection Stuff
+aldeed:simple-schema
+aldeed:collection2
 meteorhacks:subs-manager
-
-
-
 
 # UI packages
 twbs:bootstrap
@@ -30,19 +33,13 @@ angular:angular-route
 # other
 natestrauser:connection-banner
 
-
-#accounts-ui
 jquery
 random
-font-awesome
 profile-online
 http
 less 
 anti:i18n
-kadira
-ganalytics
+datariot:ganalytics
 accounts-github
 email
-#appcache
-latency
-synced-cron
+percolate:synced-cron

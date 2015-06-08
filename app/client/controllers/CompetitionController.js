@@ -17,7 +17,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 		$scope.loadingStatus = undefined;
 		$scope.showUpdateButton = false;
 		$scope.showEditButton = false;
-		$scope.manualResultActivated = false;
+		$scope.manualResultActivated = undefined;
 		$scope.manualResults = [];
 		$scope.bets = [];
 		$scope.facebookSharingPossible = false;
@@ -48,29 +48,33 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 			return false;
 		};
 
+		$scope.enterManualResult = function (matchId) {
+			$scope.manualResultActivated = matchId;
+		};
+
 		$scope.updateCompetition = function (competition) {
 			Meteor.call("doOLDBUpdateForCompetition", $scope.competition._id, function (error, result) {
 				if (error)
-					alert(error);
+					Log.popup.error(error);
 			});
 		};
 		$scope.startCompetition = function (competition) {
 			Meteor.call("startManualCompetition", $scope.competition._id, function (error, result) {
 				if (error)
-					alert(error);
+					Log.popup.error(error);
 			});
 		};
 		$scope.restartCompetition = function (competition) {
 			Meteor.call("restartManualCompetition", $scope.competition._id, function (error, result) {
 				if (error)
-					alert(error);
+					Log.popup.error(error);
 			});
 		};
 
 		$scope.updatePoints = function (competition) {
 			Meteor.call("updatePoints", $scope.competition._id, function (error, result) {
 				if (error)
-					alert(error);
+					Log.popup.error(error);
 			});
 		};
 
@@ -170,22 +174,15 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 			FacebookService.postOnFacebook(competition, match, bet);
 		};
 
-		$scope.activateManualResult = function (matchId) {
-			$scope.manualResults[matchId] = {
-				home: 0,
-				away: 0
-			};
-			$scope.manualResultActivated = false;
-			$scope.manualResultActivated = true;
-		};
-
 		$scope.updateMatchManually = function (match_id) {
-			Meteor.call("updateMatchManually", match_id, parseInt($scope.manualResults[match_id].home), parseInt($scope.manualResults[match_id].away), function (error) {
-				if (error)
-					Log.popup.error(error);
-				$scope.manualResultActivated = false;
-				$scope.$apply();
-			});
+			if ($scope.manualResults[match_id] !== undefined) {
+				Meteor.call("updateMatchManually", match_id, $scope.manualResults[match_id].home, $scope.manualResults[match_id].away, function (error) {
+					if (error)
+						Log.popup.error(error.error);
+					$scope.manualResultActivated = undefined;
+					$scope.$apply();
+				});
+			} else Log.popup.error("Please enter a result!");
 		};
 
 
