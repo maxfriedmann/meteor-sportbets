@@ -88,6 +88,13 @@ app.directive('breadcrumb', ["$modal", function ($modal) {
 							"url": "/competitions/" + $routeParams.competitionName + "/ranking"
 						});
 					}
+                    
+                    if ($route.current.$$route && $route.current.$$route.originalPath.indexOf('/edit') != -1) {
+						$scope.breadcrumbs.push({
+							"label": i18n("common.edit"),
+							"url": "/competitions/" + $routeParams.competitionName + "/edit"
+						});
+					}
 				}
 			});
 		}],

@@ -24,11 +24,6 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 		$scope.teamTableEntries = {};
 		$scope.competitionOwner = false;
 
-		// subscriptions
-		if ($routeParams.competitionName != undefined) {
-			GlobalSubsManager.subscribe("competitionByName", $routeParams.competitionName);
-		}
-
 		$scope.updateSelectedGroup = function (selectedGroup) {
 			// exceptions for special groups
 			switch (selectedGroup.group_name) {
@@ -167,6 +162,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 					console.log("return code : " + result);
 				}
 				$scope.progressComponent("bet-area-" + match._id, false);
+				$scope.$apply();
 			});
 		};
 
@@ -266,80 +262,101 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 			}
 		}
 
-		autorun($scope, function () {
-			// get competition
-			$scope.competition = Competitions.findOne({
-				name: $routeParams.competitionName
-			});
+		// subscriptions
+		if ($routeParams.competitionName != undefined) {
+			console.log("yeah 1");
+			Meteor.subscribe("competitionByName", $routeParams.competitionName, function () {
 
-			if ($scope.competition != null) {
-				$scope.competitionOwner = Meteor.userId() !== null && Meteor.userId() === $scope.competition.owner;
+				console.log("yeah 2");
 
-				GlobalSubsManager.subscribe("betsForCompetitionIdAndPlayerId", $scope.competition._id, Meteor.userId());
-				GlobalSubsManager.subscribe("matchesForCompetitionId", $scope.competition._id);
-
-				// fill groups
-				$scope.groups = [];
-				$scope.groups.push({
-					"group_name": "allmatches"
-				});
-				$scope.groups.push({
-					"group_name": "upcomingmatches"
-				});
-				$scope.groups = $scope.groups.concat($scope.competition.groups);
-
-				// get selected group
-				if ($routeParams.groupId !== undefined && $scope.competition.groups !== undefined) {
-					_.each($scope.groups, function (group) {
-						if (group.group_id == $routeParams.groupId || (group.group_id == undefined && group.group_name == $routeParams.groupName)) {
-							$scope.selectedGroup = group;
-						}
+				// get competition
+				Tracker.autorun(function () {
+					$scope.competition = Competitions.findOne({
+						name: $routeParams.competitionName
 					});
-				}
+					$scope.$apply();
+				});
 
-				$scope.isAdministrator = isAdministrator();
+				if ($scope.competition != null) {
+					$scope.competitionOwner = Meteor.userId() !== null && Meteor.userId() === $scope.competition.owner;
 
-				$scope.showUpdateButton = isAdministrator() && $scope.competition.openligadb != undefined;
-				$scope.showEditButton = $scope.competition.owner === Meteor.userId();
-
-				// get matches
-				$scope.loadMatches(0, $scope.matchesLoaded);
-
-				if ($routeParams.betGroupId != undefined) {
-					$scope.betGroup = BetGroups.findOne({
-						_id: $routeParams.betGroupId
+					// fill groups
+					$scope.groups = [];
+					$scope.groups.push({
+						"group_name": "allmatches"
 					});
-				} else {
-					$scope.betGroup = undefined;
-				}
+					$scope.groups.push({
+						"group_name": "upcomingmatches"
+					});
+					$scope.groups = $scope.groups.concat($scope.competition.groups);
 
-
-				// get ranking
-				$scope.updateTable();
-
-				// get bets
-				Bets.find({
-					"competitionId": $scope.competition._id,
-					"owner": Meteor.userId()
-				}).forEach(function (bet) {
-					if (bet == undefined) {
-						bet = {
-							homegoals: null,
-							awaygoals: null
-						};
+					// get selected group
+					if ($routeParams.groupId !== undefined && $scope.competition.groups !== undefined) {
+						_.each($scope.groups, function (group) {
+							if (group.group_id == $routeParams.groupId || (group.group_id == undefined && group.group_name == $routeParams.groupName)) {
+								$scope.selectedGroup = group;
+							}
+						});
 					}
-					$scope.bets[bet.matchId] = bet;
-				});
 
-				// get bet groups
-				$scope.betGroups = [];
-				$scope.betGroups.push({
-					name: "== Global ==",
-					_id: -1
-				});
-				$scope.betGroups = $scope.betGroups.concat($scope.competition.getBetGroups());
-				$scope.showjoinbutton = Meteor.user() != undefined && $scope.betGroup != undefined && $scope.betGroup.players != undefined && !_.contains($scope.betGroup.players, Meteor.userId());
-			}
-		});
+					$scope.isAdministrator = isAdministrator();
+
+					$scope.showUpdateButton = isAdministrator() && $scope.competition.openligadb != undefined;
+					$scope.showEditButton = $scope.competition.owner === Meteor.userId();
+
+					// get matches
+					Meteor.subscribe("matchesForCompetitionId", $scope.competition._id, function () {
+						Tracker.autorun(function () {
+							$scope.loadMatches(0, $scope.matchesLoaded);
+							// get ranking
+							$scope.updateTable();
+							$scope.$apply();
+						});
+					});
+
+
+					if ($routeParams.betGroupId != undefined) {
+						$scope.betGroup = BetGroups.findOne({
+							_id: $routeParams.betGroupId
+						});
+					} else {
+						$scope.betGroup = undefined;
+					}
+
+
+
+
+					// get bets
+					Meteor.subscribe("betsForCompetitionIdAndPlayerId", $scope.competition._id, Meteor.userId(), function () {
+						Tracker.autorun(function () {
+							Bets.find({
+								"competitionId": $scope.competition._id,
+								"owner": Meteor.userId()
+							}).forEach(function (bet) {
+								if (bet == undefined) {
+									bet = {
+										homegoals: null,
+										awaygoals: null
+									};
+								}
+								$scope.bets[bet.matchId] = bet;
+							});
+							$scope.$apply();
+						});
+					});
+
+					// get bet groups
+					$scope.betGroups = [];
+					$scope.betGroups.push({
+						name: "== Global ==",
+						_id: -1
+					});
+					$scope.betGroups = $scope.betGroups.concat($scope.competition.getBetGroups());
+					$scope.showjoinbutton = Meteor.user() != undefined && $scope.betGroup != undefined && $scope.betGroup.players != undefined && !_.contains($scope.betGroup.players, Meteor.userId());
+
+					$scope.$apply();
+				}
+			});
+		} else console.error("No competition name given!");
 
 				}]);

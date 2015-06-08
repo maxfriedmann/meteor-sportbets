@@ -24,6 +24,8 @@ twbs:bootstrap
 semantic:ui
 semantic:ui-css
 bootstrap-alerts
+angular:angular
+angular:angular-route
 
 # other
 natestrauser:connection-banner

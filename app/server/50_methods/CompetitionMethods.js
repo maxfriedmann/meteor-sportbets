@@ -149,6 +149,8 @@ Meteor.methods({
 				var teamsPlayed = [];
 
 				for (var m = 0; m < (leagueDaysInTotal / 2); m++) {
+					if (competition.options.randomizeTeamNames === true)
+						teams = _.shuffle(teams);
 
 					// get a free team
 					var freeTeam = _.find(teams, function (index) {
@@ -223,7 +225,7 @@ Meteor.methods({
 
 					if (teamA === teamB || _.contains(teamCombosPlayedAlready, teamA + "_" + teamB))
 						continue;
-					
+
 
 					// create the match        
 					Matches.insert({
@@ -289,6 +291,9 @@ Meteor.methods({
 				if (leagueDay === 0) {
 					var teamsPlayed = [];
 					for (var m = 0; m < currentRoundGamesCount; m++) {
+
+						if (competition.options.randomizeTeamNames === true)
+							teams = _.shuffle(teams);
 
 						// get 2 free teams
 						var teamA = _.find(teams, function (index) {

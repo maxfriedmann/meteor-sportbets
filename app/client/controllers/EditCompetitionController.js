@@ -11,7 +11,7 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 
 	// subscriptions
 	if ($routeParams.competitionName != undefined) {
-		GlobalSubsManager.subscribe("competitionByName", $routeParams.competitionName, function () {
+		Meteor.subscribe("competitionByName", $routeParams.competitionName, function () {
 			$scope.competition = Competitions.findOne({
 				name: $routeParams.competitionName
 			});
@@ -26,7 +26,7 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 				$scope.competition.options.randomizeTeamNames = true;
 
 			$scope.loading = false;
-			//$scope.$apply();
+			$scope.$apply();
 			
 			$('.ui.checkbox').checkbox();
 		});

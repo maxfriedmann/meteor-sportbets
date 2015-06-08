@@ -2,14 +2,6 @@
 
 <div class="sportbets-mainarea">
 	<h2>{{i18n("competition.title")}}</h2>
-	
-	
-	<div class="pull-right">
-		<div class="ui compact labeled mini icon button" ng-click="createCompetition()">
-		  <i class="add icon"></i>
-		  {{i18n("competition.createCompetition")}}
-		</div>
-	</div>
 
 	<div class="row" ng-repeat="competition in competitions" align="center">
 		<div class="col-md-2 hidden-xs">
@@ -53,8 +45,7 @@
 			<div class="col-md-3 col-xs-6">
 				<div class="col-md-7 col-xs-9">{{i18n("competition.finished")}}</div>
 				<div class="col-md-3 col-xs-3">
-					<span class="badge"
-						ng-show="competition.totalFinishedMatches != undefined">{{competition.totalFinishedMatches}}</span>
+					<span class="badge" ng-show="competition.totalFinishedMatches != undefined">{{competition.totalFinishedMatches}}</span>
 					<span ng-show="competition.totalFinishedMatches == undefined"><img
 						src="/images/ajax-loader.gif" width="20px" /></span>
 				</div>
@@ -64,14 +55,9 @@
 			<p>&nbsp;</p>
 		</div>
 		<div class="col-md-2 col-xs-12" align="left center">
-			<button class="btn btn-primary btn-block helptext-left"
-				title="Show matches and place bets for this competition"
-				ng-click='openPath("/competitions/" + competition.name + "/groups/special-upcomingmatches")'>{{i18n("competition.showmatches")}}</button>
-			<button class="btn btn-primary btn-block helptext-left" title="Show Ranking and access Bet Group Functionality"
-				ng-click='openPath("/competitions/" + competition.name + "/ranking")'>{{i18n("competition.showranking")}}</button>
-			<button class="btn btn-primary btn-block helptext-left"
-				title="Show Ranking and access Bet Group Functionality"
-				ng-click='openPath("/competitions/" + competition.name + "/specialbets")'>{{i18n("competition.showspecialbets")}}</button>
+			<button class="btn btn-primary btn-block helptext-left" title="Show matches and place bets for this competition" ng-click='openPath("/competitions/" + competition.name + "/groups/special-upcomingmatches")'>{{i18n("competition.showmatches")}}</button>
+			<button class="btn btn-primary btn-block helptext-left" title="Show Ranking and access Bet Group Functionality" ng-click='openPath("/competitions/" + competition.name + "/ranking")'>{{i18n("competition.showranking")}}</button>
+			<button class="btn btn-primary btn-block helptext-left" title="Show Ranking and access Bet Group Functionality" ng-click='openPath("/competitions/" + competition.name + "/specialbets")'>{{i18n("competition.showspecialbets")}}</button>
 		</div>
 		<div class="col-xs-12" ng-if="!$last">
 			<div class="ui horizontal icon divider">
@@ -84,4 +70,14 @@
 	<div align="center" ng-if="!competitionsLoaded">
 		<img src="/images/ajax-loader.gif" /> Loading competitions...
 	</div>
+	<div align="center" ng-if="competitionsLoaded && competitions.length == 0">
+		<h6>No competitions yet...</h6>
+	</div>
+
+	<p>
+		<div class="ui compact labeled icon teal button pull-right" ng-click="createCompetition()">
+			<i class="add icon"></i> {{i18n("competition.createCompetition")}}
+		</div>
+	</p>
+	<p>&nbsp;</p>
 </div>

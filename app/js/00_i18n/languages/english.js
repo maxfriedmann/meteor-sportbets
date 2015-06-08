@@ -5,7 +5,9 @@ i18n.map('en', {
 		description: "Description",
 		create: "Create",
 		id: "ID",
-		save: "Save"
+		save: "Save",
+		edit: "Edit",
+		back: "Back"
 	},
 	help: "Help",
 	upcomingmatches: "Upcoming Matches",
