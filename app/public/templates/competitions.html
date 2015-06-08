@@ -74,10 +74,10 @@
 		<h6>No competitions yet...</h6>
 	</div>
 
-	<p>
+	<div ng-if="showCreateCompetitionLink">
 		<div class="ui compact labeled icon teal button pull-right" ng-click="createCompetition()">
 			<i class="add icon"></i> {{i18n("competition.createCompetition")}}
 		</div>
-	</p>
+	</div>
 	<p>&nbsp;</p>
 </div>

@@ -32,6 +32,8 @@ Meteor.methods({
 		return true;
 	},
 	createCompetition: function (id, name, type) {
+		if (this.userId === null)
+			throw new Meteor.Error("You have to be logged in to be able to create a new competition!");
 		if (!Match.test(id, String))
 			throw new Meteor.Error("Competition ID must be a string!");
 		if (!/^[a-zA-Z0-9_]+$/.test(id))
