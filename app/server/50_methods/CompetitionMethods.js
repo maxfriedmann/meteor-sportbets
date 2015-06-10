@@ -1,23 +1,26 @@
 Meteor.methods({
 	doOLDBUpdateForCompetition: function (competitionId) {
-		if (isAdministrator()) {
-			check(competitionId, String);
-			console.log("Getting Competition by ID : " + competitionId);
 
-			// clearing update flag
-			Competitions.update({
-				"_id": competitionId
-			}, {
-				$unset: {
-					"openligadb.last_change_date": 1
-				}
-			});
+		check(competitionId, String);
+		var competition = Competitions.findOne({
+			_id: competitionId
+		});
+		if (!competition)
+			throw new Meteor.Error("Could not find competition with id : " + id);
+		if (competition.owner !== this.userId)
+			throw new Meteor.Error("You are not the owner of this competition!");
 
-			OpenLigaDBService.updateCompetition(competitionId);
-			RankingService.updateRankings(competitionId);
-		} else {
-			throw new Meteor.Error(403, "You're not an administrator!");
-		}
+		// clearing update flag
+		Competitions.update({
+			"_id": competitionId
+		}, {
+			$unset: {
+				"openligadb.last_change_date": 1
+			}
+		});
+
+		OpenLigaDBService.updateCompetition(competitionId);
+		RankingService.updateRankings(competitionId);
 	},
 	updatePoints: function (competitionId) {
 		if (isAdministrator()) {
@@ -69,7 +72,7 @@ Meteor.methods({
 
 		return true;
 	},
-	updateCompetition: function (id, name, options) {
+	updateCompetition: function (id, name, options, openligadb) {
 		if (!Match.test(id, String))
 			throw new Meteor.Error("Competition ID must be a string!");
 		if (!Match.test(name, String))
@@ -82,21 +85,33 @@ Meteor.methods({
 		var competition = Competitions.findOne({
 			_id: id
 		});
+		
 		if (!competition)
 			throw new Meteor.Error("Could not find competition with id : " + id);
 		if (competition.owner !== this.userId)
 			throw new Meteor.Error("You are not the owner of this competition!");
 
-		// update the competition
-		Competitions.update({
-			_id: id
-		}, {
-			$set: {
-				displayName: name,
-				options: options
-			}
-		});
-
+		if (competition.type === "openligadb") {
+			Competitions.update({
+				_id: id
+			}, {
+				$set: {
+					displayName: name,
+					options: options,
+					openligadb: openligadb
+				}
+			});
+		} else {
+			// update the competition
+			Competitions.update({
+				_id: id
+			}, {
+				$set: {
+					displayName: name,
+					options: options
+				}
+			});
+		}
 		return true;
 	},
 	startManualCompetition: function (id) {
@@ -379,7 +394,7 @@ Meteor.methods({
 				"started": true
 			}
 		});
-		
+
 		// and an initial update
 		CompetitionService.updateManualTournament(competition._id)
 	},

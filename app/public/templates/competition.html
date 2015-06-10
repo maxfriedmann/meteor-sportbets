@@ -11,20 +11,8 @@
 			<div class="ui small labeled blue icon button" ng-click="openPath('/competitions/' + competition.name + '/specialbets')">
 				<i class="empty star icon"></i> {{i18n("competition.specialbets")}}
 			</div>
-			<div class="ui small labeled green icon button" ng-click="updateCompetition(competition)" ng-if="showUpdateButton">
-				<i class="refresh icon"></i> {{i18n("competition.updatecompetition")}}
-			</div>
-			<div class="ui small labeled green icon button" ng-click="updatePoints(competition)" ng-if="showUpdateButton">
-				<i class="refresh icon"></i> Update Points
-			</div>
-			<div class="ui small labeled green icon button" ng-click="startCompetition()" ng-if="showEditButton && !competition.started && competition.type != 'openligadb'">
-				<i class="play icon"></i> Start Competition
-			</div>
-			<div class="ui small labeled red icon button" ng-click="restartCompetition()" ng-if="showEditButton && competition.started && competition.type != 'openligadb'">
-				<i class="retweet icon"></i> Restart Competition
-			</div>
 			<div class="ui small labeled orange icon button" ng-click="openPath('/competitions/' + competition.name + '/edit')" ng-if="showEditButton">
-				<i class="edit icon"></i> Edit Competition
+				<i class="edit icon"></i> Administration
 			</div>
 
 

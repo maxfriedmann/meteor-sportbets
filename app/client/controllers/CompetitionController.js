@@ -52,32 +52,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 			$scope.manualResultActivated = matchId;
 		};
 
-		$scope.updateCompetition = function (competition) {
-			Meteor.call("doOLDBUpdateForCompetition", $scope.competition._id, function (error, result) {
-				if (error)
-					Log.popup.error(error);
-			});
-		};
-		$scope.startCompetition = function (competition) {
-			Meteor.call("startManualCompetition", $scope.competition._id, function (error, result) {
-				if (error)
-					Log.popup.error(error);
-			});
-		};
-		$scope.restartCompetition = function (competition) {
-			Meteor.call("restartManualCompetition", $scope.competition._id, function (error, result) {
-				if (error)
-					Log.popup.error(error);
-			});
-		};
-
-		$scope.updatePoints = function (competition) {
-			Meteor.call("updatePoints", $scope.competition._id, function (error, result) {
-				if (error)
-					Log.popup.error(error);
-			});
-		};
-
+		
 		$scope.loadMatches = function (start, limit) {
 			$scope.loadingStatus = "Loading more matches...";
 			if ($scope.competition) {

@@ -7,7 +7,7 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 
 	$scope.loading = true;
 
-	
+
 
 	// subscriptions
 	if ($routeParams.competitionName != undefined) {
@@ -27,7 +27,7 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 
 			$scope.loading = false;
 			$scope.$apply();
-			
+
 			$('.ui.checkbox').checkbox();
 		});
 	}
@@ -40,9 +40,8 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 		}
 		return result;
 	}
-	
-	$scope.getWildcards = function()
-	{
+
+	$scope.getWildcards = function () {
 		if ($scope.competition.type === "manualLeague")
 			return $scope.competition.options.teamCount % 2;
 		if ($scope.competition.type === "manualTournament")
@@ -53,17 +52,44 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 	$scope.saveCompetition = function () {
 		// truncate team names, maybe count has changed
 		$scope.competition.options.teamNames = _.first($scope.competition.options.teamNames, $scope.competition.options.teamCount);
-		
+
 		console.log("updating competition with options : ", $scope.competition.options);
-		
-		Meteor.call("updateCompetition", $scope.competition._id, $scope.competition.displayName, $scope.competition.options, function (error) {
+
+		Meteor.call("updateCompetition", $scope.competition._id, $scope.competition.displayName, $scope.competition.options, $scope.competition.openligadb, function (error) {
 			if (error)
 				Log.popup.error(error.error);
 			else
 				Log.popup.success("Successfully saved competition!");
 		});
 	}
-	
-	
+
+	$scope.updateOLDBCompetition = function (competition) {
+		Meteor.call("doOLDBUpdateForCompetition", $scope.competition._id, function (error, result) {
+			if (error)
+				Log.popup.error(error);
+		});
+	};
+	$scope.startCompetition = function (competition) {
+		Meteor.call("startManualCompetition", $scope.competition._id, function (error, result) {
+			if (error)
+				Log.popup.error(error);
+		});
+	};
+	$scope.restartCompetition = function (competition) {
+		Meteor.call("restartManualCompetition", $scope.competition._id, function (error, result) {
+			if (error)
+				Log.popup.error(error);
+		});
+	};
+
+	$scope.updatePoints = function (competition) {
+		Meteor.call("updatePoints", $scope.competition._id, function (error, result) {
+			if (error)
+				Log.popup.error(error);
+		});
+	};
+
+
+
 
 }]);

@@ -69,6 +69,10 @@ CompetitionMatch.prototype.getBets = function () {
 	});
 }
 
+CompetitionMatch.prototype.getType = function () {
+	return this.type;
+};
+
 
 CompetitionMatch.prototype.getTeamNameA = function () {
 	if (this.name_team1 !== null)

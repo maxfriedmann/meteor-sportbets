@@ -1,9 +1,42 @@
 <breadcrumb></breadcrumb>
 <div class="sportbets-mainarea">
-	<h1 class="ui header">{{i18n("competition.updatecompetition")}}</h2>
-	<p>
+
+
+	<div class="row">
+		<div class="col-xs-12 col-md-6 pull-right" align="right">
+
+			<div class="ui small labeled green icon button" ng-click="updateOLDBCompetition(competition)" ng-if="competition.type === 'openligadb'">
+				<i class="refresh icon"></i> OpenLigaDB Competition Update
+			</div>
+			<div class="ui small labeled green icon button" ng-click="updatePoints(competition)" ng-if="competition.type === 'openligadb'">
+				<i class="refresh icon"></i> Points Update
+			</div>
+			<div class="ui small labeled green icon button" ng-click="startCompetition()" ng-if="!competition.started && competition.type != 'openligadb'">
+				<i class="play icon"></i> Start Competition
+			</div>
+			<div class="ui small labeled red icon button" ng-click="restartCompetition()" ng-if="competition.started && competition.type != 'openligadb'">
+				<i class="retweet icon"></i> Restart Competition
+			</div>
+			<div class="ui small labeled blue icon button" ng-click="openPath('/competitions/' + competition.name)">
+				<i class="reply icon"></i> Goto Competition
+			</div>
+		</div>
+
+
+
+		<div class="col-md-6 pull-left">
+			<h2>
+				{{i18n("competition.updatecompetition")}}
+			</h2>
+
+		</div>
+	</div>
+
+	<p>&nbsp;</p>
+
+
 	<form class="ui form" ng-if="!loading">
-		<h2 class="ui dividing header">Competition Details</h4>
+		<h4 class="ui dividing header">Competition Details</h4>
 		<div class="three fields">
 			<div class="field">
 				<label>{{i18n("common.id")}}</label>
@@ -18,21 +51,21 @@
 				<input type="text" name="name" placeholder="Competition Name" ng-model="competition.type" disabled>
 			</div>
 		</div>
-		<div class="field">
-<!--			<div class="ui toggle checkbox">-->
-			  <input type="checkbox" name="randomizeTeamNames" ng-model="competition.options.randomizeTeamNames">
-			  <label>Randomize Teams on Tournament Start</label>
-<!--			</div>-->
-		  </div>
-				<div class="field" ng-if="competition.type == 'manualLeague' || competition.type == 'manual1on1'">
-<!--			<div class="ui toggle checkbox">-->
-			  <input type="checkbox" name="returnRound" ng-model="competition.options.returnRound">
-			  <label>Hin- und Rückrunde</label>
-<!--			</div>-->
-		  </div>
+		<div class="field" ng-if="competition.type != 'openligadb'">
+			<!--			<div class="ui toggle checkbox">-->
+			<input type="checkbox" name="randomizeTeamNames" ng-model="competition.options.randomizeTeamNames">
+			<label>Randomize Teams on Tournament Start</label>
+			<!--			</div>-->
+		</div>
+		<div class="field" ng-if="competition.type == 'manualLeague' || competition.type == 'manual1on1'">
+			<!--			<div class="ui toggle checkbox">-->
+			<input type="checkbox" name="returnRound" ng-model="competition.options.returnRound">
+			<label>Hin- und Rückrunde</label>
+			<!--			</div>-->
+		</div>
 
-		<h2 class="ui dividing header">Team Configuration</h4>
 		<div ng-if="competition.type !== 'openligadb'">
+			<h4 class="ui dividing header">Team Configuration</h4>
 
 			<div class="field">
 				<label>Number of Teams</label>
@@ -41,11 +74,42 @@
 			</div>
 			<div class="ui grid">
 				<div class="four wide column" ng-repeat="index in range(1, competition.options.teamCount)">Team {{index}} Name :
-					<input type="text" ng-model="competition.options.teamNames[(index-1)]" required  ng-minlength="3">
+					<input type="text" ng-model="competition.options.teamNames[(index-1)]" required ng-minlength="3">
 				</div>
 			</div>
 		</div>
-		<div class="ui submit button" ng-click="saveCompetition()">{{i18n("common.save")}}</div> <div class="ui warning button" ng-click="openPath('/competitions/' + competition.name)">{{i18n("common.back")}}</div>
-	</form></p>
+
+		<!--openligadb config -->
+		<span ng-if="competition.type === 'openligadb'">
+			<h4 class="ui dividing header">OpenLigaDB Configuration</h4>
+			
+			<div class="ui four fields">
+				<div class="field">
+					<label>Liga ID</label>
+					<input type="text" ng-model="competition.openligadb.id" required>
+				</div>
+				<div class="field">
+					<label>Liga Shortcut</label>
+					<input type="text" ng-model="competition.openligadb.shortcut" required>
+				</div>
+				<div class="field">
+					<label>Liga Saison</label>
+					<input type="text" ng-model="competition.openligadb.saison" required>
+				</div>
+				<div class="field">
+					<label>Result Type</label>
+					<select ng-model="competition.openligadb.resultTypeId" required>
+						<option value="2">Liga (e.g. Bundesliga)</option>
+						<option value="3">Tournament (e.g. Weltmeisterschaft)</option>
+						<option value="4">Tournament mit Hin- und Rückspiel (e.g. Champions League)</option>
+					</select>
+					<div class="ui small">This is used to map OpenLigaDB results to Sportbet Views!</div>
+				</div>
+			</div>
+		</span>
+
+
+		<div class="ui green submit button pull-right" ng-click="saveCompetition()">{{i18n("common.save")}}</div>
+	</form>
 	<div ng-if="loading">Loading...</div>
 </div>
