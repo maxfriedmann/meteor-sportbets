@@ -12,23 +12,26 @@ app.controller("EditCompetitionController", ["$scope", "$location", "autorun", "
 	// subscriptions
 	if ($routeParams.competitionName != undefined) {
 		Meteor.subscribe("competitionByName", $routeParams.competitionName, function () {
-			$scope.competition = Competitions.findOne({
-				name: $routeParams.competitionName
+			Tracker.autorun(function () {
+				$scope.competition = Competitions.findOne({
+					name: $routeParams.competitionName
+				});
+				console.log("comp : ", $scope.competition);
+
+				// inits
+				if ($scope.competition.options === undefined)
+					$scope.competition.options = {};
+				if ($scope.competition.options.teamNames === undefined)
+					$scope.competition.options.teamNames = [];
+				if ($scope.competition.options.randomizeTeamNames === undefined)
+					$scope.competition.options.randomizeTeamNames = true;
+
+				$scope.loading = false;
+				$scope.$apply();
+
+				$('.ui.checkbox').checkbox();
+
 			});
-			console.log("comp : ", $scope.competition);
-
-			// inits
-			if ($scope.competition.options === undefined)
-				$scope.competition.options = {};
-			if ($scope.competition.options.teamNames === undefined)
-				$scope.competition.options.teamNames = [];
-			if ($scope.competition.options.randomizeTeamNames === undefined)
-				$scope.competition.options.randomizeTeamNames = true;
-
-			$scope.loading = false;
-			$scope.$apply();
-
-			$('.ui.checkbox').checkbox();
 		});
 	}
 

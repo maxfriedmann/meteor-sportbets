@@ -13,13 +13,16 @@ Meteor.startup(function()
 	{
 		appId = Meteor.settings.facebook.appId;
 		secret = Meteor.settings.facebook.secret;
-	}
-	
-	Accounts.loginServiceConfiguration.insert({
+		
+		Accounts.loginServiceConfiguration.insert({
 		service : "facebook",
 		"appId" : appId,
 		"secret" : secret
-	});
+		});
+		console.log("Facebook settings applied!");
+	}
 	
-	console.log("Facebook settings applied!");
+	
+	
+	
 });

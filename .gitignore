@@ -5,3 +5,4 @@ app/settings.deployment.json
 app/settings.local.json
 app/settings.test.json
 test/coverage.html
+app/deployment.1.json

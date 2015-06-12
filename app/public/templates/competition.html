@@ -16,7 +16,7 @@
 			</div>
 
 
-			<div ng-if="competition.groups.length > 1 && competition.type != 'manualTournament'" align="right" style="padding:5px">
+			<div ng-if="competition.groups.length > 1" align="right" style="padding:5px">
 				<form class="form-horizontal" role="form">
 					<div class="form-group helptext-bottom" title="Filter all matches by groups/days/weekends/rounds" align="right">
 						<label class="col-sm-3 control-label" for="competitionGroupSelector">{{i18n("competition.filter")}}</label>
@@ -35,7 +35,7 @@
 				{{openligadbI18n(competition.name)}} <span ng-if="selectedGroup">{{openligadbI18n(selectedGroup.group_name)}}</span>
 			</h2>
 			<h2 ng-if="!competition.openligadb">
-				{{competition.displayName}} <span ng-if="selectedGroup">{{openligadbI18n(selectedGroup.group_name)}}</span>
+				{{competition.displayName}} <span ng-if="selectedGroup && competition.groups.length > 1">{{openligadbI18n(selectedGroup.group_name)}}</span>
 			</h2>
 		</div>
 	</div>
