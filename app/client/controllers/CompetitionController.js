@@ -10,7 +10,7 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 	$scope.selectedGroup = undefined;
 	$scope.groups = [];
 	$scope.lastGroupId = "none";
-	$scope.matchesLoaded = 20;
+	$scope.matchesLoaded = 200;
 	$scope.matchesPerPage = 5;
 	$scope.matches = undefined;
 	$scope.loadingStatus = undefined;
