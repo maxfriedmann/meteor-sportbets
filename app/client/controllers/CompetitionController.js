@@ -152,115 +152,123 @@ app.controller("CompetitionController", ["$scope", "$routeParams", "autorun", "R
 
 
 	$scope.updateTable = function () {
-		$scope.teamTableEntries = {};
-		if ($scope.competition.type === "manual1on1" || $scope.competition.type === "manualLeague" || $scope.competition.type === "manualTournament") {
-			for (var i = 0; i < $scope.matches.length; i++) {
-				var match = $scope.matches[i];
-				if ($scope.teamTableEntries[match.name_team1] === undefined) {
-					$scope.teamTableEntries[match.name_team1] = {
-						name: match.name_team1,
-						games: 0,
-						won: 0,
-						drawn: 0,
-						lost: 0,
-						goalDifference: [0, 0],
-						points: 0
+		try {
+			$scope.teamTableEntries = {};
+			if ($scope.competition.type === "manual1on1" || $scope.competition.type === "manualLeague" || $scope.competition.type === "manualTournament") {
+				for (var i = 0; i < $scope.matches.length; i++) {
+					var match = $scope.matches[i];
+					if ($scope.teamTableEntries[match.name_team1] === undefined) {
+						$scope.teamTableEntries[match.name_team1] = {
+							name: match.name_team1,
+							games: 0,
+							won: 0,
+							drawn: 0,
+							lost: 0,
+							goalDifference: [0, 0],
+							points: 0
+						};
 					}
-				}
-				if ($scope.teamTableEntries[match.name_team2] === undefined) {
-					$scope.teamTableEntries[match.name_team2] = {
-						name: match.name_team2,
-						games: 0,
-						won: 0,
-						drawn: 0,
-						lost: 0,
-						goalDifference: [0, 0],
-						points: 0
-					}
-				}
-
-				if (match.isFinished()) {
-					// games
-					$scope.teamTableEntries[match.name_team1].games++;
-					$scope.teamTableEntries[match.name_team2].games++;
-
-					// won/lost/drawn
-					if (match.points_team1 > match.points_team2) {
-						$scope.teamTableEntries[match.name_team1].won++;
-						$scope.teamTableEntries[match.name_team1].points += 3;
-						$scope.teamTableEntries[match.name_team2].lost++;
-					} else if (match.points_team1 < match.points_team2) {
-						$scope.teamTableEntries[match.name_team2].won++;
-						$scope.teamTableEntries[match.name_team2].points += 3;
-						$scope.teamTableEntries[match.name_team1].lost++;
-					} else if (match.points_team1 == match.points_team2) {
-						$scope.teamTableEntries[match.name_team1].drawn++;
-						$scope.teamTableEntries[match.name_team2].drawn++;
-						$scope.teamTableEntries[match.name_team1].points += 1;
-						$scope.teamTableEntries[match.name_team2].points += 1;
+					if ($scope.teamTableEntries[match.name_team2] === undefined) {
+						$scope.teamTableEntries[match.name_team2] = {
+							name: match.name_team2,
+							games: 0,
+							won: 0,
+							drawn: 0,
+							lost: 0,
+							goalDifference: [0, 0],
+							points: 0
+						};
 					}
 
-					// goals
-					$scope.teamTableEntries[match.name_team1].goalDifference[0] += parseInt(match.points_team1);
-					$scope.teamTableEntries[match.name_team1].goalDifference[1] += parseInt(match.points_team2);
+					if (match.isFinished()) {
+						// games
+						$scope.teamTableEntries[match.name_team1].games++;
+						$scope.teamTableEntries[match.name_team2].games++;
 
-					$scope.teamTableEntries[match.name_team2].goalDifference[0] += parseInt(match.points_team2);
-					$scope.teamTableEntries[match.name_team2].goalDifference[1] += parseInt(match.points_team1);
-				}
-			};
+						// won/lost/drawn
+						if (match.points_team1 > match.points_team2) {
+							$scope.teamTableEntries[match.name_team1].won++;
+							$scope.teamTableEntries[match.name_team1].points += 3;
+							$scope.teamTableEntries[match.name_team2].lost++;
+						} else if (match.points_team1 < match.points_team2) {
+							$scope.teamTableEntries[match.name_team2].won++;
+							$scope.teamTableEntries[match.name_team2].points += 3;
+							$scope.teamTableEntries[match.name_team1].lost++;
+						} else if (match.points_team1 === match.points_team2) {
+							$scope.teamTableEntries[match.name_team1].drawn++;
+							$scope.teamTableEntries[match.name_team2].drawn++;
+							$scope.teamTableEntries[match.name_team1].points += 1;
+							$scope.teamTableEntries[match.name_team2].points += 1;
+						}
+						else
+							throw new Meteor.Error("won/lost/drawn broken!!!");
 
-			$scope.teamTableEntries = _.toArray($scope.teamTableEntries);
+						// goals
+						$scope.teamTableEntries[match.name_team1].goalDifference[0] += parseInt(match.points_team1);
+						$scope.teamTableEntries[match.name_team1].goalDifference[1] += parseInt(match.points_team2);
 
-			$scope.teamTableEntries = $scope.teamTableEntries.sort(function (entryA, entryB) {
-				if (entryA.points === entryB.points) {
-					var goalDifferenceA = entryA.goalDifference[0] - entryA.goalDifference[1];
-					var goalDifferenceB = entryB.goalDifference[0] - entryB.goalDifference[1];
-					return goalDifferenceA < goalDifferenceB;
-				}
-				return entryA.points < entryB.points;
-			});
+						$scope.teamTableEntries[match.name_team2].goalDifference[0] += parseInt(match.points_team2);
+						$scope.teamTableEntries[match.name_team2].goalDifference[1] += parseInt(match.points_team1);
+					}
+				};
 
-			console.log("$scope.teamTableEntries : ", $scope.teamTableEntries);
-		}
+				$scope.teamTableEntries = _.toArray($scope.teamTableEntries);
 
-		if ($scope.competition.type == "manualTournament") {
-			var singleElimination = {
-				"teams": [],
-				"results": [[]]
-			};
-			_.each($scope.matches, function (match) {
+				$scope.teamTableEntries = $scope.teamTableEntries.sort(function (entryA, entryB) {
+					if (entryA.points === entryB.points) {
+						var goalDifferenceA = entryA.goalDifference[0] - entryA.goalDifference[1];
+						var goalDifferenceB = entryB.goalDifference[0] - entryB.goalDifference[1];
+						return goalDifferenceA < goalDifferenceB;
+					}
+					return entryA.points < entryB.points;
+				});
 
-				// teams
-				if (match.group_order_id === 0) {
-					singleElimination.teams.push([match.getTeamNameA(), match.getTeamNameB()]);
-				}
+				console.log("$scope.teamTableEntries : ", $scope.teamTableEntries);
+			}
 
-				// results
-				if (singleElimination.results[0] === undefined)
-					singleElimination.results[0] = [];
-				if (singleElimination.results[0][match.group_order_id] === undefined)
-					singleElimination.results[0][match.group_order_id] = [];
+			if ($scope.competition.type == "manualTournament") {
+				var singleElimination = {
+					"teams": [],
+					"results": [[]]
+				};
+				_.each($scope.matches, function (match) {
 
-				if (match.points_team1 == undefined || match.points_team2 == undefined)
-					singleElimination.results[0][match.group_order_id].push([null, null]);
-				else {
+					// teams
+					if (match.group_order_id === 0) {
+						singleElimination.teams.push([match.getTeamNameA(), match.getTeamNameB()]);
+					}
 
-					var pointsA = match.points_team1 == undefined ? undefined : match.points_team1;
-					var pointsB = match.points_team2 == undefined ? undefined : match.points_team2;
+					// results
+					if (singleElimination.results[0] === undefined)
+						singleElimination.results[0] = [];
+					if (singleElimination.results[0][match.group_order_id] === undefined)
+						singleElimination.results[0][match.group_order_id] = [];
 
-					singleElimination.results[0][match.group_order_id].push([pointsA, pointsB]);
-				}
+					if (match.points_team1 == undefined || match.points_team2 == undefined)
+						singleElimination.results[0][match.group_order_id].push([null, null]);
+					else {
 
-			});
+						var pointsA = match.points_team1 == undefined ? undefined : match.points_team1;
+						var pointsB = match.points_team2 == undefined ? undefined : match.points_team2;
 
-			console.log(singleElimination);
+						singleElimination.results[0][match.group_order_id].push([pointsA, pointsB]);
+					}
 
-			$('#tournamentTree').bracket({
-				init: singleElimination,
-				skipConsolationRound: true
-			})
+				});
+
+				console.log(singleElimination);
+
+				$('#tournamentTree').bracket({
+					init: singleElimination,
+					skipConsolationRound: true
+				})
 
 
+			}
+
+
+		} catch (e) {
+			Log.popup.error(e);
 		}
 	}
 
